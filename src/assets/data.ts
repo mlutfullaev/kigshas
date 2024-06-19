@@ -14,7 +14,7 @@ export const mockTable: ITableItem[] = [
     id: 1,
     time: 1718784435215,
     clearance: '398 В-12',
-    tonPercent: 93,
+    tonPercent: 83,
     shas: 347,
     weight: 7,
     stickingPercent: 5
@@ -23,16 +23,16 @@ export const mockTable: ITableItem[] = [
     id: 2,
     time: 1718784435215,
     clearance: '398 В-12',
-    tonPercent: 93,
+    tonPercent: 13,
     shas: 347,
     weight: 7,
-    stickingPercent: 5
+    stickingPercent: 59
   },
   {
     id: 3,
     time: 1718784435215,
     clearance: '398 В-12',
-    tonPercent: 93,
+    tonPercent: 83,
     shas: 347,
     weight: 7,
   },
@@ -42,7 +42,7 @@ export const mockTable: ITableItem[] = [
     clearance: '398 В-12',
     shas: 347,
     weight: 7,
-    stickingPercent: 5
+    stickingPercent: 11
   },
   {
     id: 5,
@@ -83,7 +83,7 @@ export const mockTable: ITableItem[] = [
     clearance: '398 В-12',
     tonPercent: 93,
     weight: 7,
-    stickingPercent: 5
+    stickingPercent: 12
   },
   {
     id: 10,

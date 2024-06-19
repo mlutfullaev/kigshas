@@ -61,6 +61,11 @@
   }
   &-item {
     color: #00172C;
-    padding: 18px
+    padding: 18px;
+
+    &.error {
+      background: #FFDFDF;
+      color: #FF5959;
+    }
   }
 }

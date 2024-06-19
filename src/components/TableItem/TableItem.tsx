@@ -9,17 +9,17 @@ const TableItem = (props: ITableItem) => {
       <div className="table-item">
         <p>{props.clearance}</p>
       </div>
-      <div className="table-item">
+      <div className={`table-item${!props.shas ? ' error' : ''}`}>
         <p>{props.shas || 'Не удалось считать метку'}</p>
       </div>
-      <div className="table-item">
-        <p>{props.tonPercent || '-'}</p>
+      <div className={`table-item${props.tonPercent && props.tonPercent < 90 ? ' error' : ''}`}>
+        <p>{props.tonPercent ? props.tonPercent + '%' : '-'}</p>
       </div>
       <div className="table-item">
         <p>{props.weight || '-'}</p>
       </div>
-      <div className="table-item">
-        <p>{props.stickingPercent || '-'}</p>
+      <div className={`table-item${props.stickingPercent && props.stickingPercent > 10 ? ' error' : ''}`}>
+        <p>{props.stickingPercent ? props.stickingPercent + '%' : '-'}</p>
       </div>
     </div>
   )
