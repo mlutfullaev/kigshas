@@ -61,6 +61,7 @@
   }
   &-content {
     height: calc(100vh - 333px);
+    width: calc(100% + 10px);
     overflow-y: scroll;
     scrollbar-width: thin;
     scrollbar-color: #00386C #fff;
