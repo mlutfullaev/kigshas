@@ -1,0 +1,30 @@
+.table {
+  border-left: #B6B6B6 1px solid;
+  border-top: #B6B6B6 1px solid;
+
+  &-column {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    text-align: center;
+
+    > div {
+      border-right: #B6B6B6 1px solid;
+      border-bottom: #B6B6B6 1px solid;
+      font-weight: 600;
+      font-size: 20px;
+    }
+  }
+  &-header-item {
+    background: #00172C;
+    color: #fff;
+    padding: 24px;
+  }
+  &-content {
+    height: 85vh;
+    overflow-y: scroll;
+  }
+  &-item {
+    color: #00172C;
+    padding: 18px
+  }
+}

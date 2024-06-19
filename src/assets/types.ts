@@ -1,4 +1,4 @@
-export interface TableItem {
+export interface ITableItem {
   id: number
   time: number
   clearance: string

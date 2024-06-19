@@ -1,8 +1,8 @@
-import { TableItem } from '@/assets/types.ts'
+import { ITableItem } from '@/assets/types.ts'
 
-export const mockTable: TableItem[] = [
+export const mockTable: ITableItem[] = [
   {
-    id: 1,
+    id: 0,
     time: 1718784435215,
     clearance: '398 В-12',
     tonPercent: 93,
