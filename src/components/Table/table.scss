@@ -1,29 +1,42 @@
 .table {
   border-left: #B6B6B6 1px solid;
-  border-top: #B6B6B6 1px solid;
 
   &-column {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     text-align: center;
+    border-top: #B6B6B6 1px solid;
 
     > div {
       border-right: #B6B6B6 1px solid;
-      border-bottom: #B6B6B6 1px solid;
       font-weight: 600;
       font-size: 20px;
+
+      @media (min-width: 2500px) {
+        font-size: 30px;
+      }
+      @media (min-width: 3000px) {
+        font-size: 40px;
+      }
+    }
+    &:last-child {
+      border-bottom: #B6B6B6 1px solid;
     }
   }
-  &-header-item {
-    background: #00172C;
-    color: #fff;
-    padding: 24px;
+  &-header {
+    margin-right: 10px;
+
+    &-item {
+      background: #00172C;
+      color: #fff;
+      padding: 24px;
+    }
   }
   &-content {
     height: 85vh;
     overflow-y: scroll;
     scrollbar-width: thin;
-    scrollbar-color: #333 #111;
+    scrollbar-color: #00386C #fff;
 
     &::-webkit-scrollbar {
       width: 8px;
@@ -33,16 +46,16 @@
     &::-webkit-scrollbar-thumb {
       background-color: #333;
       border-radius: 10px;
-      border: 2px solid #111;
+      border: 2px solid #00386C;
     }
 
     &::-webkit-scrollbar-track {
-      background: #111;
+      background: #00386C;
       border-radius: 10px;
     }
 
     &::-webkit-scrollbar-corner {
-      background: #111;
+      background: #00386C;
     }
 
   }

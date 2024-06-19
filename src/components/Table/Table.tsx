@@ -8,7 +8,7 @@ const Table = () => {
 
   return (
     <div className="table">
-      <div className="table-column">
+      <div className="table-column table-header">
         <div className="table-header-item">
           <p>Время</p>
         </div>
