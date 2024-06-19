@@ -33,7 +33,7 @@
     }
   }
   &-content {
-    height: 85vh;
+    height: calc(100vh - 385px);
     overflow-y: scroll;
     scrollbar-width: thin;
     scrollbar-color: #00386C #fff;
