@@ -1,8 +1,12 @@
+import './mainPage.scss'
+import TableSize from '@/components/TableSize/TableSize.tsx'
+
 const MainPage = () => {
   return (
-    <div>
+    <main>
+      <TableSize />
 
-    </div>
+    </main>
   )
 }
 
