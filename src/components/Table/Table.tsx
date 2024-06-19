@@ -28,14 +28,12 @@ const Table = () => {
           <p>% Налипания в объеме</p>
         </div>
       </div>
-      <div className="table-content">
-        {
-          tableData.map(item => <TableItem {...item} key={item.id} />)
-        }
-        {
-          tableData.map(item => <TableItem {...item} key={item.id} />)
-        }
-      </div>
+      {
+        tableData.map(item => <TableItem {...item} key={item.id} />)
+      }
+      {
+        tableData.map(item => <TableItem {...item} key={item.id} />)
+      }
     </div>
   )
 }

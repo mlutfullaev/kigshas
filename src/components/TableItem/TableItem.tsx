@@ -4,7 +4,7 @@ const TableItem = (props: ITableItem) => {
   return (
     <div className="table-column">
       <div className="table-item">
-        <p>{new Date(props.time).toLocaleDateString()}</p>
+        <p>{new Date(props.time).toTimeString()}</p>
       </div>
       <div className="table-item">
         <p>{props.clearance}</p>
