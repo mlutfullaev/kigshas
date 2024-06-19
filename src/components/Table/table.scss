@@ -1,67 +1,17 @@
 .table {
-  --top-offset: 240px;
-  --header-offset: 80px;
-  --padding-offset: 60px;
-  position: relative;
-  height: calc(100vh - var(--top-offset));
-  overflow-y: scroll;
-  scrollbar-width: thin;
-  scrollbar-color: #00386C #fff;
-  padding-top: var(--header-offset);
-
-  &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #333;
-    border-radius: 10px;
-    border: 2px solid #00386C;
-  }
-  &::-webkit-scrollbar-track {
-    background: #00386C;
-    border-radius: 10px;
-  }
-  &::-webkit-scrollbar-corner {
-    background: #00386C;
-  }
-  &::after,
-  &::before {
-    content: '';
-    width: 1px;
-    height: calc(100vh - var(--top-offset) - 20px);
-    position: fixed;
-    background: #B6B6B6;
-    bottom: 0;
-  }
-  &::before {
-    left: var(--padding-offset);
-  }
-  &::after {
-    right: var(--padding-offset);
-  }
-
-  @media (min-width: 3200px) {
-    --top-offset: 265px;
-    --header-offset: 144px;
-    --padding-offset: 100px;
-  }
+  border-left: #B6B6B6 1px solid;
 
   &-column {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     text-align: center;
-    border-bottom: #B6B6B6 1px solid;
-    //margin-right: 10px;
+    border-top: #B6B6B6 1px solid;
 
     > div {
       border-right: #B6B6B6 1px solid;
       font-weight: 600;
       font-size: 20px;
 
-      &:last-child {
-        border-right: none;
-      }
       @media (min-width: 2500px) {
         font-size: 30px;
       }
@@ -69,30 +19,45 @@
         font-size: 40px;
       }
     }
+    &:last-child {
+      border-bottom: #B6B6B6 1px solid;
+    }
   }
   &-header {
-    top: var(--top-offset);
-    margin-right: 0;
-    position: fixed;
-    z-index: 2;
-    width: calc(100% - var(--padding-offset) * 2);
-    border-radius: 5px;
-    overflow: hidden;
-    border-top: #B6B6B6 1px solid;
-    border-bottom: none;
+    margin-right: 10px;
 
-    @media (min-width: 2500px) {
-      border-radius: 20px;
-    }
     &-item {
       background: #00172C;
       color: #fff;
       padding: 24px;
-
-      @media (min-width: 3000px) {
-        padding: 48px;
-      }
     }
+  }
+  &-content {
+    height: calc(100vh - 333px);
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #00386C #fff;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #333;
+      border-radius: 10px;
+      border: 2px solid #00386C;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #00386C;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-corner {
+      background: #00386C;
+    }
+
   }
   &-item {
     color: #00172C;
@@ -101,9 +66,6 @@
     &.error {
       background: #FFDFDF;
       color: #FF5959;
-    }
-    @media (min-width: 3000px) {
-      padding: 36px;
     }
   }
 }
