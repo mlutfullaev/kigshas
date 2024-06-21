@@ -1,10 +1,21 @@
 import { ITableItem } from '@/assets/types.ts'
 
 const TableItem = (props: ITableItem) => {
+  const formatTime = (num: number) => {
+    return num < 10 ? `0${num}` : num
+  }
+  const getTime = (time: number) => {
+    const date = new Date(time)
+    const hours = formatTime(date.getHours())
+    const minutes = formatTime(date.getMinutes())
+    const seconds = formatTime(date.getSeconds())
+    return `${hours}:${minutes}:${seconds}`
+  }
+
   return (
     <div className="table-column">
       <div className="table-item">
-        <p>{new Date(props.time).toLocaleDateString()}</p>
+        <p>{getTime(props.time)}</p>
       </div>
       <div className="table-item">
         <p>{props.clearance}</p>

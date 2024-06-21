@@ -1,5 +1,6 @@
 .table {
   position: relative;
+  width: 100%;
 
   &::after,
   &::before {
@@ -51,8 +52,19 @@
       color: #fff;
       padding: 24px;
 
+      @media (max-width: 1600px) {
+        padding: 12px;
+      }
       @media (min-width: 3200px) {
         padding: 48px;
+      }
+
+      p {
+        font-size: 20px;
+
+        @media (max-width: 900px) {
+          font-size: 18px;
+        }
       }
     }
 
@@ -63,35 +75,20 @@
   &-content {
     height: calc(100vh - 333px);
     width: calc(100% + 10px);
+    padding-right: 10px;
     overflow-y: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: #00386C #fff;
 
-    &::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+    @media (max-width: 1600px) {
+      height: calc(100vh - 300px);
     }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: #333;
-      border-radius: 10px;
-      border: 2px solid #00386C;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: #00386C;
-      border-radius: 10px;
-    }
-
-    &::-webkit-scrollbar-corner {
-      background: #00386C;
-    }
-
   }
   &-item {
     color: #00172C;
     padding: 18px;
 
+    p {
+      font-size: 20px;
+    }
     &.error {
       background: #FFDFDF;
       color: #FF5959;
