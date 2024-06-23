@@ -6,10 +6,13 @@ const TableItem = (props: ITableItem) => {
   }
   const getTime = (time: number) => {
     const date = new Date(time)
+    const day = formatTime(date.getDate())
+    const month = formatTime(date.getMonth() + 1)
+    const year = date.getFullYear()
     const hours = formatTime(date.getHours())
     const minutes = formatTime(date.getMinutes())
     const seconds = formatTime(date.getSeconds())
-    return `${hours}:${minutes}:${seconds}`
+    return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`
   }
 
   return (

@@ -1,22 +1,11 @@
 .table {
   position: relative;
   width: 100%;
-
-  &::after,
-  &::before {
-    content: '';
-    width: 1px;
-    height: calc(100% - 20px);
-    position: absolute;
-    background: #B6B6B6;
-    bottom: 0;
-  }
-  &::before {
-    left: 0;
-  }
-  &::after {
-    right: 0;
-  }
+  border: 1px solid #B6B6B6;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  overflow-y: scroll;
+  height: calc(100vh - 230px);
 
   &-column {
     display: grid;
@@ -24,6 +13,9 @@
     text-align: center;
     border-bottom: #B6B6B6 1px solid;
 
+    &:last-child {
+      border-bottom: none;
+    }
     > div {
       border-right: #B6B6B6 1px solid;
       font-weight: 600;
@@ -41,8 +33,8 @@
     }
   }
   &-header {
-    position: relative;
-    z-index: 2;
+    position: sticky;
+    top: 0;
     border-radius: 5px;
     overflow: hidden;
     border-bottom: none;
@@ -73,13 +65,13 @@
     }
   }
   &-content {
-    height: calc(100vh - 333px);
-    width: calc(100% + 10px);
-    padding-right: 10px;
-    overflow-y: scroll;
+    //height: calc(100vh - 333px);
+    //width: calc(100% + 10px);
+    //padding-right: 10px;
+    //overflow-y: scroll;
 
     @media (max-width: 1600px) {
-      height: calc(100vh - 300px);
+      //height: calc(100vh - 300px);
     }
   }
   &-item {
