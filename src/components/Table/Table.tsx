@@ -13,7 +13,7 @@ const Table = () => {
           <p>Время</p>
         </div>
         <div className="table-header-item">
-          <p>№ Рудаспуска</p>
+          <p>№ Рудоспуска</p>
         </div>
         <div className="table-header-item">
           <p>№ ШАС</p>
