@@ -1,0 +1,29 @@
+.support-status-page {
+  ul {
+    list-style: none;
+    padding-bottom: 70px;
+    display: grid;
+    gap: 20px;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--dark-grey);
+      padding: 20px;
+      font-size: 32px;
+      font-weight: 600;
+      border-radius: 20px;
+
+      img {
+        width: 70px;
+      }
+    }
+  }
+
+  button {
+    margin: 0 auto;
+    width: max-content;
+    display: block;
+  }
+}

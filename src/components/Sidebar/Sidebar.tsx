@@ -1,27 +1,11 @@
 import './sidebar.scss'
 import { Link, useLocation } from 'react-router-dom'
+import routes from '@/routes.tsx'
 
 const Sidebar = () => {
   const location = useLocation()
 
-  const sidebarItems = [
-    {
-      title: 'Добавления оборудования и параметров',
-      route: '/',
-    },
-    {
-      title: 'Cостояние служб',
-      route: '/services',
-    },
-    {
-      title: 'Ошибки системы',
-      route: '/errors',
-    },
-    {
-      title: 'Аварий системы',
-      route: '/emergencies',
-    }
-  ]
+  const sidebarItems = routes.filter(route => route.sidebar)
 
   return (
     <aside className="sidebar">
@@ -32,7 +16,7 @@ const Sidebar = () => {
             to={item.route}
             className={location.pathname === item.route ? 'active' : ''}
           >
-            {item.title}
+            {item.header}
           </Link>
         ))
       }

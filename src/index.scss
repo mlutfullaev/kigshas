@@ -43,6 +43,9 @@ body {
   grid-template-columns: 400px 1fr;
   min-height: calc(100vh - var(--header-height));
 }
+.page-content {
+  padding: 80px 48px;
+}
 
 .scrollbar {
   scrollbar-width: thin;
@@ -77,6 +80,14 @@ body {
 
   &-blue {
     background: var(--blue);
+    color: var(--white);
+
+    &:hover {
+      opacity: .8;
+    }
+  }
+  &-red {
+    background: var(--red);
     color: var(--white);
 
     &:hover {

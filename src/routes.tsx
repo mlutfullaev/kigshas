@@ -4,7 +4,7 @@ import LoginPage from '@/pages/Login/LoginPage.tsx'
 import ProtectedRoute from '@/components/ProtectedRote/ProtectedRoute.tsx'
 import ServicesPage from '@/pages/Services/ServicesPage.tsx'
 import ErrorsPage from '@/pages/Errors/ErrorsPage.tsx'
-import EmergenciesPage from '@/pages/Emergencies/EmergenciesPage.tsx'
+import SupportStatus from '@/pages/SupportStatus/SupportStatus.tsx'
 
 export default [
   {
@@ -14,10 +14,10 @@ export default [
     component: <ProtectedRoute><MainPage /></ProtectedRoute>,
   },
   {
-    header: 'Аварий системы',
+    header: 'Cостояние служб',
     sidebar: true,
-    component: <ProtectedRoute><ServicesPage /></ProtectedRoute>,
-    route: '/services',
+    component: <ProtectedRoute><SupportStatus /></ProtectedRoute>,
+    route: '/support-status',
   },
   {
     header: 'Ошибки системы',
@@ -26,10 +26,10 @@ export default [
     route: '/errors',
   },
   {
-    header: 'Cостояние служб',
+    header: 'Аварий системы',
     sidebar: true,
-    component: <ProtectedRoute><EmergenciesPage /></ProtectedRoute>,
-    route: '/emergencies',
+    component: <ProtectedRoute><ServicesPage /></ProtectedRoute>,
+    route: '/services',
   },
   {
     header: 'Рабочий стол администратора',
