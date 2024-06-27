@@ -32,9 +32,6 @@ const Table = () => {
         {
           tableData.map(item => <TableItem {...item} key={item.id} />)
         }
-        {
-          tableData.map(item => <TableItem {...item} key={item.id} />)
-        }
       </div>
     </div>
   )
