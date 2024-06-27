@@ -1,5 +1,4 @@
 import './loginPage.scss'
-import Header from '@/components/Header/Header.tsx'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -29,26 +28,23 @@ const LoginPage = () => {
   
   return (
     <div className="login-page">
-      <Header title="Рабочий стол администратора" />
-      <div className="login-content">
-        <label htmlFor="login">Логин</label>
-        <input
-          type="text"
-          id="login"
-          className={`base-input${error && !login.length ? ' error' : ''}`}
-          value={login}
-          onChange={e => setLogin(e.target.value)}
-        />
-        <label htmlFor="password">Пароль</label>
-        <input
-          type="password"
-          id="password"
-          className={`base-input${error && !password.length ? ' error' : ''}`}
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        <button className="btn btn-blue" onClick={onLogin}>Войти</button>
-      </div>
+      <label htmlFor="login">Логин</label>
+      <input
+        type="text"
+        id="login"
+        className={`base-input${error && !login.length ? ' error' : ''}`}
+        value={login}
+        onChange={e => setLogin(e.target.value)}
+      />
+      <label htmlFor="password">Пароль</label>
+      <input
+        type="password"
+        id="password"
+        className={`base-input${error && !password.length ? ' error' : ''}`}
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+      />
+      <button className="btn btn-blue" onClick={onLogin}>Войти</button>
     </div>
   )
 }

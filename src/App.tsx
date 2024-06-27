@@ -1,5 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import routes from '@/routes.tsx'
+import Header from '@/components/Header/Header.tsx'
+import Sidebar from '@/components/Sidebar/Sidebar.tsx'
 
 function App() {
 
@@ -10,8 +12,21 @@ function App() {
           routes.map(route =>
             <Route
               path={route.route}
-              element={route.component}
               key={route.route}
+              element={
+                <>
+                  <Header title={route.header} />
+                  {
+                    route.sidebar ?
+                      <div className="content">
+                        <Sidebar />
+                        {route.component}
+                      </div>
+                      :
+                      route.component
+                  }
+                </>
+              }
             />
           )
         }

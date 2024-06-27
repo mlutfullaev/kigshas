@@ -1,27 +1,24 @@
 .login-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 90vh;
+  margin: 0 auto;
+  max-width: 483px;
+  width: 100%;
 
-  .login-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 90vh;
-    margin: 0 auto;
-    max-width: 483px;
+  label {
+    color: var(--dark-blue);
+    padding-bottom: 4px;
+    font-size: 14px;
+  }
+  input {
+    margin-bottom: 10px;
+  }
+
+  button {
+    max-width: 150px;
     width: 100%;
-
-    label {
-      color: var(--dark-blue);
-      padding-bottom: 4px;
-      font-size: 14px;
-    }
-    input {
-      margin-bottom: 10px;
-    }
-
-    button {
-      max-width: 150px;
-      width: 100%;
-      margin: 14px auto 0;
-    }
+    margin: 14px auto 0;
   }
 }
