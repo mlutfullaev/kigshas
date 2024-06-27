@@ -16,6 +16,13 @@ const LoginPage = () => {
     }
 
     if (error) setError(false)
+
+    const data = {
+      login,
+      password
+    }
+
+    localStorage.setItem('user', JSON.stringify(data))
     
     navigate('/')
   }
@@ -23,7 +30,7 @@ const LoginPage = () => {
   return (
     <div className="login-page">
       <Header title="Рабочий стол администратора" />
-      <div className="content">
+      <div className="login-content">
         <label htmlFor="login">Логин</label>
         <input
           type="text"

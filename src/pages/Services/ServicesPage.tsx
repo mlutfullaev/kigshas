@@ -1,15 +1,15 @@
 import Header from '@/components/Header/Header.tsx'
 import Sidebar from '@/components/Sidebar/Sidebar.tsx'
 
-const MainPage = () => {
+const ServicesPage = () => {
   return (
     <div>
-      <Header title="Добавления оборудования и параметров" />
+      <Header title="Аварий системы"/>
       <div className="content">
-        <Sidebar />
+        <Sidebar/>
       </div>
     </div>
   )
 }
 
-export default MainPage
+export default ServicesPage

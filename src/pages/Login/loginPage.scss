@@ -1,6 +1,6 @@
 .login-page {
 
-  .content {
+  .login-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,6 +20,7 @@
 
     button {
       max-width: 150px;
+      width: 100%;
       margin: 14px auto 0;
     }
   }

@@ -1,0 +1,20 @@
+.sidebar {
+  padding: 48px 0;
+  height: 100%;
+  display: grid;
+  align-content: start;
+  border-right: 1px solid var(--dark-grey);
+
+  a {
+    padding: 24px 32px;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--black);
+    transition: .3s;
+
+    &.active,
+    &:hover {
+      background-color: var(--dark-grey)
+    }
+  }
+}
