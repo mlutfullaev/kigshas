@@ -4,8 +4,35 @@
   box-sizing: border-box;
 }
 
+button {
+  cursor: pointer;
+  border: none;
+}
+
+input {
+  border: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:root {
+  --white: #fff;
+  --blue: #00386C;
+  --dark-blue: #00172C;
+  --grey: #EDEDED;
+  --light-grey: #F6F6F6;
+  --orange: #FFA959;
+  --green: #1C8D50;
+  --red: #FF5959;
+  --light-red: #FFDFDF;
+}
+
 body {
   font-family: 'Inter', sans-serif;
+  background-color: var(--light-grey);
 }
 
 .scrollbar {
@@ -30,5 +57,34 @@ body {
 
   &::-webkit-scrollbar-corner {
     background: #00386C;
+  }
+}
+
+.btn {
+  border-radius: 7px;
+  padding: 16px 25px;
+  transition: .3s;
+
+  &-blue {
+    background: var(--blue);
+    color: var(--white);
+
+    &:hover {
+      opacity: .8;
+    }
+  }
+}
+
+.base-input {
+  background: var(--grey);
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 14px;
+
+  &:focus {
+    outline: var(--blue) 1px solid;
+  }
+  &.error {
+    outline: var(--red) 1px solid;
   }
 }

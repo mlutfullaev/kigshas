@@ -1,0 +1,26 @@
+.login-page {
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 90vh;
+    margin: 0 auto;
+    max-width: 483px;
+    width: 100%;
+
+    label {
+      color: var(--dark-blue);
+      padding-bottom: 4px;
+      font-size: 14px;
+    }
+    input {
+      margin-bottom: 10px;
+    }
+
+    button {
+      max-width: 150px;
+      margin: 14px auto 0;
+    }
+  }
+}
