@@ -1,0 +1,14 @@
+.main-page {
+  .main-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    align-items: center;
+
+    div {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+  }
+}

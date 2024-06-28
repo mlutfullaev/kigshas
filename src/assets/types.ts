@@ -12,3 +12,7 @@ export type SelectType = {
   value: number;
   label: string;
 }
+
+type ValuePiece = Date | null;
+
+export type DatePickerValue = ValuePiece | [ValuePiece, ValuePiece];

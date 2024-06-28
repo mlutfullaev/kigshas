@@ -1,6 +1,7 @@
 import './loginPage.scss'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import BaseInput from "@/components/BaseInput/BaseInput.tsx";
 
 const LoginPage = () => {
   const [login, setLogin] = useState('')
@@ -28,21 +29,18 @@ const LoginPage = () => {
   
   return (
     <div className="login-page">
-      <label htmlFor="login">Логин</label>
-      <input
-        type="text"
-        id="login"
-        className={`base-input${error && !login.length ? ' error' : ''}`}
-        value={login}
-        onChange={e => setLogin(e.target.value)}
+      <label className="base-label">Логин</label>
+      <BaseInput
+        error={error}
+        state={login}
+        setState={setLogin}
       />
-      <label htmlFor="password">Пароль</label>
-      <input
+      <label className="base-label" htmlFor="password">Пароль</label>
+      <BaseInput
+        error={error}
+        state={password}
         type="password"
-        id="password"
-        className={`base-input${error && !password.length ? ' error' : ''}`}
-        value={password}
-        onChange={e => setPassword(e.target.value)}
+        setState={setPassword}
       />
       <button className="btn btn-blue" onClick={onLogin}>Войти</button>
     </div>

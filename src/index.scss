@@ -77,6 +77,10 @@ body {
   border-radius: 7px;
   padding: 16px 25px;
   transition: .3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 
   &-blue {
     background: var(--blue);
@@ -94,8 +98,21 @@ body {
       opacity: .8;
     }
   }
+  &-orange {
+    background: var(--orange);
+    color: var(--white);
+
+    &:hover {
+      opacity: .8;
+    }
+  }
 }
 
+.base-label {
+  color: var(--dark-blue);
+  padding-bottom: 4px;
+  font-size: 14px;
+}
 .base-input {
   color: var(--dark-blue);
   background: var(--grey);
