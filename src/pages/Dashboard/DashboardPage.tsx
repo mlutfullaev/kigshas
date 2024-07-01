@@ -60,7 +60,7 @@ const DashboardPage = () => {
                 <p>{event.kig ? event.kig + '%' : '-'}</p>
               </div>
               <div className="table-item">
-                <p>{Number(event.output_volume)-Number(event.input_volume) || '-'}</p>
+                <p>{event.unloaded_volume || '-'}</p>
               </div>
               <div className={`table-item${event.sticking && Number(event.sticking) > 10 ? ' error' : ''}`}>
                 <p>{event.sticking ? event.sticking + '%' : '-'}</p>
