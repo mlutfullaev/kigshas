@@ -1,11 +1,36 @@
 import './dashboardPage.scss'
-import Table from '@/components/Table/Table.tsx'
 import Select from 'react-select'
 import { tableSizeOptions } from '@/assets/data.ts'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { API_URL } from '@/main.tsx'
+import { IEvent } from '@/assets/types.ts'
+import { getTime } from '@/assets/helpers.ts'
+import BaseTable from '@/components/BaseTable/BaseTable.tsx'
 
+const dashboardHeaders = [
+  'Время',
+  '№ Рудоспуска',
+  '№ ШАС',
+  'КИГ % тон',
+  'Масса тонн',
+  '% Налипания в объеме'
+]
 const DashboardPage = () => {
+  const [events, setEvents] = useState<IEvent[]>([])
   const [size, setSize] = useState(tableSizeOptions[0].value)
+
+  useEffect(() => {
+    axios.get(`${API_URL}/events`, {
+      params: {
+        per_page: size
+      }
+    })
+      .then(res => {
+        setEvents(res.data.results)
+      })
+  }, [])
+  
   return (
     <div className="dashboard-page">
       <div className="table-size">
@@ -18,7 +43,32 @@ const DashboardPage = () => {
           closeMenuOnScroll={true}
         />
       </div>
-      <Table/>
+      <BaseTable className="dashboard-table" headers={dashboardHeaders}>
+        {
+          events.map(event => (
+            <div className="table-column">
+              <div className="table-item">
+                <p>{getTime(event.check_in_time)}</p>
+              </div>
+              <div className="table-item">
+                <p>{event.service.descent.name}</p>
+              </div>
+              <div className={`table-item${!event.vehicle.number ? ' error' : ''}`}>
+                <p>{event.vehicle.number || 'Не удалось считать метку'}</p>
+              </div>
+              <div className={`table-item${event.kig && Number(event.kig) < 90 ? ' error' : ''}`}>
+                <p>{event.kig ? event.kig + '%' : '-'}</p>
+              </div>
+              <div className="table-item">
+                <p>{Number(event.output_volume)-Number(event.input_volume) || '-'}</p>
+              </div>
+              <div className={`table-item${event.sticking && Number(event.sticking) > 10 ? ' error' : ''}`}>
+                <p>{event.sticking ? event.sticking + '%' : '-'}</p>
+              </div>
+            </div>
+          ))
+        }
+      </BaseTable>
     </div>
   )
 }

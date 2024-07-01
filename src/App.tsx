@@ -6,32 +6,30 @@ import Sidebar from '@/components/Sidebar/Sidebar.tsx'
 function App() {
 
   return (
-    <>
-      <Routes>
-        {
-          routes.map(route =>
-            <Route
-              path={route.route}
-              key={route.route}
-              element={
-                <>
-                  <Header title={route.header} />
-                  {
-                    route.sidebar ?
-                      <div className="content">
-                        <Sidebar />
-                        {route.component}
-                      </div>
-                      :
-                      route.component
-                  }
-                </>
-              }
-            />
-          )
-        }
-      </Routes>
-    </>
+    <Routes>
+      {
+        routes.map(route =>
+          <Route
+            path={route.route}
+            key={route.route}
+            element={
+              <>
+                <Header title={route.header} />
+                {
+                  route.sidebar ?
+                    <div className="content">
+                      <Sidebar />
+                      {route.component}
+                    </div>
+                    :
+                    route.component
+                }
+              </>
+            }
+          />
+        )
+      }
+    </Routes>
   )
 }
 

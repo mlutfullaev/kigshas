@@ -9,6 +9,32 @@
       display: flex;
       gap: 5px;
       align-items: center;
+
+      p {
+        color: var(--blue);
+      }
+    }
+  }
+  .main-model-table {
+    margin: 20px 0;
+    max-height: 400px;
+    .table-column {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .main-table {
+    margin: 20px 0;
+    --table-width: 170px;
+
+    .table-column {
+      grid-template-columns: var(--table-width) 1fr repeat(3, var(--table-width));
+    }
+    .table-header {
+      grid-template-columns: var(--table-width) 1fr var(--table-width) calc(var(--table-width) * 2);
+
+      button {
+        margin-left: auto;
+      }
     }
   }
 }

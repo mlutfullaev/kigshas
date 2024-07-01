@@ -25,7 +25,9 @@
       }
     }
   }
-
+  .dashboard-table .table-column {
+    grid-template-columns: repeat(6, 1fr);
+  }
   .react-select {
     &__control {
       width: 90px;

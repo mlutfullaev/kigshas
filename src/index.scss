@@ -47,9 +47,9 @@ body {
   padding: 80px 48px;
 }
 
-.scrollbar {
+.scrollable {
   scrollbar-width: thin;
-  scrollbar-color: #00386C #fff;
+  scrollbar-color: #00386C var(--light-grey);
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -90,6 +90,14 @@ body {
       opacity: .8;
     }
   }
+  &-green {
+    background: var(--green);
+    color: var(--white);
+
+    &:hover {
+      opacity: .8;
+    }
+  }
   &-red {
     background: var(--red);
     color: var(--white);
@@ -106,6 +114,15 @@ body {
       opacity: .8;
     }
   }
+}
+
+.no-rotate {
+  transition: .3s;
+
+}
+.rotate {
+  transition: .3s;
+  transform: rotate(180deg);
 }
 
 .base-label {
@@ -125,5 +142,88 @@ body {
   }
   &.error {
     outline: var(--red) 1px solid;
+  }
+}
+
+.table {
+  background-color: var(--light-grey);
+  position: relative;
+  width: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  overflow-y: auto;
+  max-height: calc(100vh - 230px);
+
+  &-content {
+    border: 1px solid #B6B6B6;
+    border-bottom: none;
+  }
+  &-column {
+    display: grid;
+    text-align: center;
+    border-bottom: #B6B6B6 1px solid;
+
+    > div {
+      border-right: #B6B6B6 1px solid;
+      font-weight: 600;
+      font-size: 20px;
+
+      &:last-child {
+        border-right: none;
+      }
+      @media (min-width: 2500px) {
+        font-size: 30px;
+      }
+      @media (min-width: 3200px) {
+        font-size: 40px;
+      }
+    }
+  }
+  &-header {
+    position: sticky;
+    top: 0;
+    border-radius: 5px;
+    overflow: hidden;
+    border-bottom: none;
+
+    &-item {
+      background: #00172C;
+      color: #fff;
+      padding: 24px;
+
+      @media (max-width: 1600px) {
+        padding: 12px;
+      }
+      @media (min-width: 3200px) {
+        padding: 48px;
+      }
+
+      p {
+        font-size: 20px;
+
+        @media (max-width: 900px) {
+          font-size: 18px;
+        }
+      }
+    }
+
+    @media (min-width: 3200px) {
+      border-radius: 20px;
+    }
+  }
+  &-item {
+    color: #00172C;
+    padding: 18px;
+
+    p {
+      font-size: 20px;
+    }
+    &.error {
+      background: #FFDFDF;
+      color: #FF5959;
+    }
+    @media (min-width: 3200px) {
+      padding: 36px;
+    }
   }
 }
