@@ -1,7 +1,7 @@
 import './dashboardPage.scss'
 import Select from 'react-select'
 import { tableSizeOptions } from '@/assets/data.ts'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
 import { IEvent } from '@/assets/types.ts'
@@ -16,12 +16,12 @@ const dashboardHeaders = [
   'Масса тонн',
   '% Налипания в объеме'
 ]
-const DashboardPage = () => {
+const DashboardPage = () => {1
   const [events, setEvents] = useState<IEvent[]>([])
   const [nextPage, setNextPage] = useState(true)
   const [size, setSize] = useState(tableSizeOptions[0].value)
 
-  const getEvents = useCallback(() => {
+  const getEvents = () => {
     if (!nextPage) return
     axios.get(`${API_URL}/events`, {
       params: {
@@ -35,11 +35,11 @@ const DashboardPage = () => {
           setNextPage(false)
         }
       })
-  }, [events.length, nextPage, size])
+  }
 
   useEffect(() => {
     getEvents()
-  }, [getEvents])
+  }, [])
   
   return (
     <div className="dashboard-page">
