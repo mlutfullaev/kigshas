@@ -1,7 +1,7 @@
 import './dashboardPage.scss'
 import Select from 'react-select'
 import { tableSizeOptions } from '@/assets/data.ts'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
 import { IEvent } from '@/assets/types.ts'
@@ -18,18 +18,28 @@ const dashboardHeaders = [
 ]
 const DashboardPage = () => {
   const [events, setEvents] = useState<IEvent[]>([])
+  const [nextPage, setNextPage] = useState(true)
   const [size, setSize] = useState(tableSizeOptions[0].value)
 
-  useEffect(() => {
+  const getEvents = useCallback(() => {
+    if (!nextPage) return
     axios.get(`${API_URL}/events`, {
       params: {
-        per_page: size
+        per_page: size,
+        page: Math.ceil(events.length / size) + 1,
       }
     })
       .then(res => {
-        setEvents(res.data.results)
+        setEvents(oldEvents => [...oldEvents, ...res.data.results])
+        if (!res.data.next) {
+          setNextPage(false)
+        }
       })
-  }, [])
+  }, [events.length, nextPage, size])
+
+  useEffect(() => {
+    getEvents()
+  }, [getEvents])
   
   return (
     <div className="dashboard-page">
@@ -43,7 +53,7 @@ const DashboardPage = () => {
           closeMenuOnScroll={true}
         />
       </div>
-      <BaseTable className="dashboard-table" headers={dashboardHeaders}>
+      <BaseTable className="dashboard-table" headers={dashboardHeaders} loadMore={getEvents}>
         {
           events.map(event => (
             <div className="table-column">

@@ -1,14 +1,40 @@
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useRef } from 'react'
 
 type BaseTableProps = {
   className: string,
   headers: (string | ReactNode)[],
-  children: ReactNode[]
+  children: ReactNode[],
+  loadMore?: () => void
 }
 
-const BaseTable = ({ className, headers, children }: BaseTableProps) => {
+const BaseTable = ({ className, headers, loadMore, children }: BaseTableProps) => {
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = scrollRef.current
+        if (scrollTop + clientHeight >= scrollHeight) {
+          if (loadMore) {
+            loadMore()
+          }
+        }
+      }
+    }
+
+    const scrollContainer = scrollRef.current as HTMLDivElement
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll)
+    }
+
+    return () => {
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('scroll', handleScroll)
+      }
+    }
+  }, [loadMore])
   return (
-    <div className={`${className} table scrollable`}>
+    <div className={`${className} table scrollable`} ref={scrollRef}>
       <div className="table-content">
         <div className="table-column table-header">
           {
