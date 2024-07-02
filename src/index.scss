@@ -7,6 +7,7 @@
 button {
   cursor: pointer;
   border: none;
+  background: transparent;
 }
 
 input {
@@ -28,6 +29,7 @@ a {
   --light-grey: #F6F6F6;
   --orange: #FFA959;
   --green: #1C8D50;
+  --light-green: #C8FFE1;
   --red: #FF5959;
   --light-red: #FFDFDF;
   --header-height: 80px
@@ -45,6 +47,24 @@ body {
 }
 .page-content {
   padding: 80px 48px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 600;
+  max-width: 400px;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.red {
+  color: var(--red);
+}
+.green {
+  color: var(--green);
+}
+.orange {
+  color: var(--orange);
 }
 
 .scrollable {
@@ -82,7 +102,7 @@ body {
   align-items: center;
   gap: 5px;
 
-  &-blue {
+  &.btn-blue {
     background: var(--blue);
     color: var(--white);
 
@@ -90,7 +110,7 @@ body {
       opacity: .8;
     }
   }
-  &-green {
+  &.btn-green {
     background: var(--green);
     color: var(--white);
 
@@ -98,7 +118,7 @@ body {
       opacity: .8;
     }
   }
-  &-red {
+  &.btn-red {
     background: var(--red);
     color: var(--white);
 
@@ -106,7 +126,7 @@ body {
       opacity: .8;
     }
   }
-  &-orange {
+  &.btn-orange {
     background: var(--orange);
     color: var(--white);
 
@@ -224,6 +244,43 @@ body {
     }
     @media (min-width: 3200px) {
       padding: 36px;
+    }
+  }
+}
+
+.main-select {
+  &__control {
+    border-radius: 8px !important;
+    border: none !important;
+    background: var(--grey) !important;
+
+    &--is-focused {
+      box-shadow: none !important;
+    }
+    &--menu-is-open {
+      .main-select__indicator svg {
+        transform: rotate(180deg);
+      }
+    }
+  }
+  &__indicator svg {
+    transition: .3s;
+  }
+  &__indicator-separator {
+    display: none;
+  }
+  &__menu {
+    border-radius: 8px !important;
+    z-index: 3 !important;
+  }
+  &__option {
+    color: #00172C!important;
+
+    &--is-focused {
+      background-color: var(--light-grey) !important;
+    }
+    &--is-selected {
+      background-color: var(--light-green) !important;
     }
   }
 }

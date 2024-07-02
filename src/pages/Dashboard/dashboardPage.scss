@@ -28,7 +28,7 @@
   .dashboard-table .table-column {
     grid-template-columns: repeat(6, 1fr);
   }
-  .react-select {
+  .dashboard-select {
     &__control {
       width: 90px;
       border-radius: 8px !important;

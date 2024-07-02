@@ -49,11 +49,15 @@ const DashboardPage = () => {1
           value={{ value: size, label: size }}
           onChange={(e) => setSize(e ? e.value : tableSizeOptions[0].value)}
           options={tableSizeOptions}
-          classNamePrefix="react-select"
+          classNamePrefix="dashboard-select"
           closeMenuOnScroll={true}
         />
       </div>
-      <BaseTable className="dashboard-table" headers={dashboardHeaders} loadMore={getEvents}>
+      <BaseTable
+        className="dashboard-table"
+        headers={dashboardHeaders}
+        loadMore={getEvents}
+      >
         {
           events.map(event => (
             <div className="table-column">

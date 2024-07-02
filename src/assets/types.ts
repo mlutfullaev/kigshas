@@ -9,7 +9,7 @@ export interface ITableItem {
 }
 
 export type SelectType = {
-  value: number;
+  value: string;
   label: string;
 }
 
