@@ -19,7 +19,7 @@ const dashboardHeaders = [
 const DashboardPage = () => {1
   const [events, setEvents] = useState<IEvent[]>([])
   const [nextPage, setNextPage] = useState(true)
-  const [size, setSize] = useState(tableSizeOptions[0].value)
+  const [size, setSize] = useState(Number(localStorage.getItem('table_size')) || tableSizeOptions[0].value)
 
   const getEvents = () => {
     if (!nextPage) return
@@ -38,6 +38,10 @@ const DashboardPage = () => {1
   }
 
   useEffect(() => {
+    localStorage.setItem('table_size', size.toString())
+  }, [size])
+
+  useEffect(() => {
     getEvents()
   }, [])
   
@@ -50,6 +54,7 @@ const DashboardPage = () => {1
           onChange={(e) => setSize(e ? e.value : tableSizeOptions[0].value)}
           options={tableSizeOptions}
           classNamePrefix="dashboard-select"
+          isSearchable={false}
           closeMenuOnScroll={true}
         />
       </div>
@@ -62,7 +67,7 @@ const DashboardPage = () => {1
           events.map(event => (
             <div className="table-column">
               <div className="table-item">
-                <p>{getTime(event.check_in_time)}</p>
+                <p>{getTime(event.check_out_time)}</p>
               </div>
               <div className="table-item">
                 <p>{event.service.descent.name}</p>
@@ -74,7 +79,7 @@ const DashboardPage = () => {1
                 <p>{event.kig ? event.kig + '%' : '-'}</p>
               </div>
               <div className="table-item">
-                <p>{event.unloaded_volume || '-'}</p>
+                <p>{Number(event.input_volume).toFixed(1) || '-'}</p>
               </div>
               <div className={`table-item${event.sticking && Number(event.sticking) > 10 ? ' error' : ''}`}>
                 <p>{event.sticking ? event.sticking + '%' : '-'}</p>
