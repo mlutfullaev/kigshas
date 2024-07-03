@@ -1,10 +1,14 @@
 import './mainPage.scss'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import BaseInput from '@/components/BaseInput/BaseInput.tsx'
 import arrowTop from '@/assets/icons/arrowTop.svg'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
 import BaseModal from '@/components/BaseModal/BaseModal.tsx'
 import BaseSelect from '@/components/BaseSelect/BaseSelect.tsx'
+import axios from 'axios'
+import { API_URL } from '@/main.tsx'
+import {IModel, IVehicle} from '@/assets/types.ts'
+import MainTop from '@/components/MainTop/MainTop.tsx'
 
 const modelHeaders = [
   'Модель ШАС',
@@ -83,10 +87,8 @@ const modelOptions = [
 ]
 
 const MainPage = () => {
-  const [coefficient, setCoefficient] = useState('')
-  const [density, setDensity] = useState('')
-  const [topFormError, setTopFormError] = useState(false)
-  const [topFormDisabled, setTopFormDisabled] = useState(true)
+  const [vehicles, setVehicles] = useState<IVehicle[]>([])
+  const [models, setModels] = useState<IModel[]>([])
   const [showModelTable, setShowModelTable] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
   const [createModal, setCreateModal] = useState(false)
@@ -103,16 +105,16 @@ const MainPage = () => {
     <button className="btn btn-green" onClick={() => setCreateModal(true)}>Cоздать новый ШАС</button>
   ]
 
-  const saveTopForm = () => {
-    if (!coefficient.length || !density.length) {
-      setTopFormError(true)
-      return
-    }
-
-    if (topFormError) setTopFormError(false)
-
-    setTopFormDisabled(true)
-  }
+  useEffect(() => {
+    axios.get(`${API_URL}/vehicles`)
+      .then(res => {
+        setVehicles(res.data)
+      })
+    axios.get(`${API_URL}/model/`)
+      .then(res => {
+        setModels(res.data)
+      })
+  }, [])
 
   const onCreateSHAS = () => {
     setCreateModal(false)
@@ -134,60 +136,23 @@ const MainPage = () => {
 
   return (
     <div className="main-page page-content">
-      <div className="main-top">
-        <div>
-          <p>Коэффициент разрыхления:</p>
-          <BaseInput
-            state={coefficient}
-            setState={setCoefficient}
-            error={topFormError}
-            disabled={topFormDisabled}
-          />
-        </div>
-        <div>
-          <p>Плотность руды:</p>
-          <BaseInput
-            state={density}
-            setState={setDensity}
-            error={topFormError}
-            disabled={topFormDisabled}
-          />
-        </div>
-        <div>
-          {
-            topFormDisabled ?
-              <button
-                onClick={() => setTopFormDisabled(false)}
-                className="btn btn-orange">Изменить параметры
-              </button> :
-              <button
-                onClick={saveTopForm}
-                className="btn btn-green">Сохранить параметры
-              </button>
-          }
-
-          <button className="btn btn-blue" onClick={() => setShowModelTable(oldValue => !oldValue)}>
-            Таблица моделей
-            <img src={arrowTop} alt="arrow" className={showModelTable ? 'rotate' : 'no-rotate'}/>
-          </button>
-        </div>
-      </div>
+      <MainTop showModelTable={showModelTable} setShowModelTable={setShowModelTable} />
       {
         showModelTable && <BaseTable className="main-model-table" headers={modelHeaders}>
           {
-            new Array(10).fill(0).map(() => (
+            models.map(modelItem => (
               <div className="table-column">
                 <div className="table-item">
-                  <p>CAT AD30 big</p>
+                  <p>{modelItem.name}</p>
                 </div>
                 <div className="table-item">
-                  <p>24</p>
+                  <p>{modelItem.weight_planned}</p>
                 </div>
                 <div className="table-item">
-                  <p>24</p>
+                  <p>{modelItem.kig_plan}</p>
                 </div>
                 <div className="table-item">
-                  <p>24</p>
+                  <p>{modelItem.weight_passport}</p>
                 </div>
               </div>
             ))
@@ -196,25 +161,30 @@ const MainPage = () => {
       }
       <BaseTable className="main-table" headers={mainHeaders}>
         {
-          new Array(10).fill(0).map(() => (
+          vehicles.map(vehicle => (
             <div className="table-column">
               <div className="table-item">
-                <p>347</p>
+                <p>{
+                  vehicle.number
+                }</p>
               </div>
               <div className="table-item">
-                <p>000000000000000000000390</p>
+                <p>{vehicle.rfid.rfid}</p>
               </div>
               <div className="table-item">
-                <p>Модель</p>
+                <p>{vehicle.model.name}</p>
               </div>
               <div className="table-item">
                 <button className="btn-orange" onClick={() => {
                   setEditModal(true)
-                  setActiveItem(0)
+                  setActiveItem(vehicle.id)
                 }}>Изменить</button>
               </div>
               <div className="table-item">
-                <button className="btn-red" onClick={() => setDeleteModal(true)}>Удалить</button>
+                <button className="btn-red" onClick={() => {
+                  setActiveItem(vehicle.id)
+                  setDeleteModal(true)
+                }}>Удалить</button>
               </div>
             </div>
           ))

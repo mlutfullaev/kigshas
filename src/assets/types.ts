@@ -20,7 +20,7 @@ export type DatePickerValue = ValuePiece | [ValuePiece, ValuePiece];
 export interface IModel {
   id: number
   name: string
-  volume: string
+  kig_plan: string
   weight_planned: string
   weight_passport: string
 }
