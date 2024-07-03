@@ -1,13 +1,12 @@
 import './mainPage.scss'
 import { useEffect, useState } from 'react'
 import BaseInput from '@/components/BaseInput/BaseInput.tsx'
-import arrowTop from '@/assets/icons/arrowTop.svg'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
 import BaseModal from '@/components/BaseModal/BaseModal.tsx'
 import BaseSelect from '@/components/BaseSelect/BaseSelect.tsx'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
-import {IModel, IVehicle} from '@/assets/types.ts'
+import { IModel, IVehicle } from '@/assets/types.ts'
 import MainTop from '@/components/MainTop/MainTop.tsx'
 
 const modelHeaders = [
