@@ -39,7 +39,7 @@ const BaseTable = ({ className, headers, loadMore, children }: BaseTableProps) =
         <div className="table-column table-header">
           {
             headers.map(header => (
-              <div className="table-header-item">
+              <div className="table-header-item" key={header?.toString()}>
                 {header}
               </div>
             ))

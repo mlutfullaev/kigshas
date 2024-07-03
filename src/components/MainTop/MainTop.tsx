@@ -3,13 +3,15 @@ import BaseInput from '@/components/BaseInput/BaseInput.tsx'
 import arrowTop from '@/assets/icons/arrowTop.svg'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
+import { ICoefficient } from '@/assets/types.ts'
 
 type MainTopProps = {
   showModelTable: boolean
   setShowModelTable: Dispatch<SetStateAction<boolean>>
+  getData: () => void
 }
 
-const MainTop = ({ showModelTable, setShowModelTable }: MainTopProps) => {
+const MainTop = ({ showModelTable, setShowModelTable, getData }: MainTopProps) => {
   const [initialCoefficient, setInitialCoefficient] = useState(
     {
       density: '',
@@ -24,28 +26,34 @@ const MainTop = ({ showModelTable, setShowModelTable }: MainTopProps) => {
   useEffect(() => {
     axios.get(`${API_URL}/coefficient/`)
       .then(res => {
-        const [density, loosening] = res.data
-        setInitialCoefficient({
-          density: density.value,
-          loosening: loosening.value
+        res.data.forEach((item: ICoefficient) => {
+          if (item.name === 'density') setDensity(item.value)
+          if (item.name === 'loosening') setLoosening(item.value)
         })
-        setLoosening(loosening.value)
-        setDensity(density.value)
+        setInitialCoefficient({
+          density: density,
+          loosening: loosening
+        })
       })
   }, [])
 
-  const saveTopForm = () => {
+  const saveTopForm = async () => {
     if (!loosening.length || !density.length) {
       setFormError(true)
       return
     }
 
+    if (formError) setFormError(false)
+
+    let changed = false
+
     if (initialCoefficient.density !== density) {
-      axios.put(`${API_URL}/coefficient/1/`, {
+      await axios.put(`${API_URL}/coefficient/1/`, {
         name: 'density',
         value: Number(density)
       })
         .then(() => {
+          changed = true
           setInitialCoefficient(value => ({
             density,
             loosening: value.loosening
@@ -53,19 +61,21 @@ const MainTop = ({ showModelTable, setShowModelTable }: MainTopProps) => {
         })
     }
     if (initialCoefficient.loosening !== loosening) {
-      axios.put(`${API_URL}/coefficient/1/`, {
+      await axios.put(`${API_URL}/coefficient/2/`, {
         name: 'loosening',
         value: Number(loosening)
       })
         .then(() => {
+          changed = true
           setInitialCoefficient(value => ({
             density: value.density,
             loosening
           }))
         })
     }
-
-    if (formError) setFormError(false)
+    if (changed) {
+      getData()
+    }
 
     setFormDisabled(true)
   }

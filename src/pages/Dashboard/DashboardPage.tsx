@@ -65,7 +65,7 @@ const DashboardPage = () => {1
       >
         {
           events.map(event => (
-            <div className="table-column">
+            <div className="table-column" key={event.id}>
               <div className="table-item">
                 <p>{getTime(event.check_out_time)}</p>
               </div>

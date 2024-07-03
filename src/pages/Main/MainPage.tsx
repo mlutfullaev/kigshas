@@ -95,7 +95,7 @@ const MainPage = () => {
   const [number, setNumber] = useState('')
   const [mark, setMark] = useState('')
   const [model, setModel] = useState('')
-  const [activeItem, setActiveItem] = useState(0)
+  const [activeItem, setActiveItem] = useState<null | number>(null)
 
   const mainHeaders = [
     '№ ШАС',
@@ -104,7 +104,7 @@ const MainPage = () => {
     <button className="btn btn-green" onClick={() => setCreateModal(true)}>Cоздать новый ШАС</button>
   ]
 
-  useEffect(() => {
+  const getData = () => {
     axios.get(`${API_URL}/vehicles`)
       .then(res => {
         setVehicles(res.data)
@@ -113,6 +113,10 @@ const MainPage = () => {
       .then(res => {
         setModels(res.data)
       })
+  }
+
+  useEffect(() => {
+    getData()
   }, [])
 
   const onCreateSHAS = () => {
@@ -133,14 +137,24 @@ const MainPage = () => {
     setEditModal(false)
   }
 
+  const onDeleteVehicle = () => {
+    if (activeItem === null) return
+    axios.delete(`${API_URL}/vehicles/${activeItem}/`)
+      .then(() => {
+        setVehicles(vehicles.filter(vehicle => vehicle.id !== activeItem))
+        setActiveItem(null)
+        setDeleteModal(false)
+      })
+  }
+
   return (
     <div className="main-page page-content">
-      <MainTop showModelTable={showModelTable} setShowModelTable={setShowModelTable} />
+      <MainTop showModelTable={showModelTable} setShowModelTable={setShowModelTable} getData={getData} />
       {
         showModelTable && <BaseTable className="main-model-table" headers={modelHeaders}>
           {
             models.map(modelItem => (
-              <div className="table-column">
+              <div className="table-column" key={modelItem.id}>
                 <div className="table-item">
                   <p>{modelItem.name}</p>
                 </div>
@@ -161,7 +175,7 @@ const MainPage = () => {
       <BaseTable className="main-table" headers={mainHeaders}>
         {
           vehicles.map(vehicle => (
-            <div className="table-column">
+            <div className="table-column" key={vehicle.id}>
               <div className="table-item">
                 <p>{
                   vehicle.number
@@ -192,8 +206,11 @@ const MainPage = () => {
       <BaseModal active={deleteModal} hide={() => setDeleteModal(false)}>
         <h3 className="title green">Вы действительно хотите удалить ШАС?</h3>
         <div className="modal-buttons">
-          <button className="btn btn-red">Да</button>
-          <button className="btn btn-green">Отмена</button>
+          <button className="btn btn-red" onClick={onDeleteVehicle}>Да</button>
+          <button className="btn btn-green" onClick={() => {
+            setActiveItem(null)
+            setDeleteModal(false)
+          }}>Отмена</button>
         </div>
       </BaseModal>
       <BaseModal active={createModal} hide={() => setCreateModal(false)}>

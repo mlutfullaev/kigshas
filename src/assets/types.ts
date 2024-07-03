@@ -25,6 +25,12 @@ export interface IModel {
   weight_passport: string
 }
 
+export interface ICoefficient {
+  id: number
+  name: string
+  value: string
+}
+
 export interface IRfid {
   id: number
   rfid: string
