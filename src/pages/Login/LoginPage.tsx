@@ -1,16 +1,19 @@
 import './loginPage.scss'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import BaseInput from "@/components/BaseInput/BaseInput.tsx";
+import BaseInput from '@/components/BaseInput/BaseInput.tsx'
+import axios from 'axios'
+import { API_URL } from '@/main.tsx'
 
 const LoginPage = () => {
-  const [login, setLogin] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate()
 
   const onLogin = () => {
-    if (!login.length || !password.length) {
+    if (!username.length || !password.length) {
       setError(true)
       return
     }
@@ -18,13 +21,20 @@ const LoginPage = () => {
     if (error) setError(false)
 
     const data = {
-      login,
+      username,
       password
     }
 
     localStorage.setItem('user', JSON.stringify(data))
-    
-    navigate('/')
+    axios.get(`${API_URL}/coefficient`)
+      .then(() => {
+        navigate('/')
+      })
+      .catch((e) => {
+        if (e.response.data.detail === 'Invalid username/password.') {
+          setErrorMessage('Неверный логин или пароль')
+        }
+      })
   }
   
   return (
@@ -32,8 +42,8 @@ const LoginPage = () => {
       <label className="base-label">Логин</label>
       <BaseInput
         error={error}
-        state={login}
-        setState={setLogin}
+        state={username}
+        setState={setUsername}
       />
       <label className="base-label" htmlFor="password">Пароль</label>
       <BaseInput
@@ -42,6 +52,9 @@ const LoginPage = () => {
         type="password"
         setState={setPassword}
       />
+      {
+        errorMessage && <p className="error-message">{errorMessage}</p>
+      }
       <button className="btn btn-blue" onClick={onLogin}>Войти</button>
     </div>
   )
