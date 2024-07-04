@@ -173,13 +173,13 @@ const MainPage = () => {
                   <p>{modelItem.name}</p>
                 </div>
                 <div className="table-item">
-                  <p>{modelItem.weight_planned}</p>
+                  <p>{Number(modelItem.weight_planned).toFixed()}</p>
                 </div>
                 <div className="table-item">
-                  <p>{modelItem.kig_plan}</p>
+                  <p>{Number(modelItem.kig_plan).toFixed()}</p>
                 </div>
                 <div className="table-item">
-                  <p>{modelItem.weight_passport}</p>
+                  <p>{Number(modelItem.weight_passport).toFixed()}</p>
                 </div>
               </div>
             ))

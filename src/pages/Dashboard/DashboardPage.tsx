@@ -81,7 +81,7 @@ const DashboardPage = () => {1
               <div className="table-item">
                 <p>{Number(event.input_volume).toFixed(1) || '-'}</p>
               </div>
-              <div className={`table-item${event.sticking && Number(event.sticking) > 10 ? ' error' : ''}`}>
+              <div className={`table-item${event.sticking && Number(event.sticking) >= 10 ? ' error' : ''}`}>
                 <p>{event.sticking ? event.sticking + '%' : '-'}</p>
               </div>
             </div>

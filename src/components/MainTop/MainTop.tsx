@@ -5,6 +5,7 @@ import axios from 'axios'
 import { API_URL } from '@/main.tsx'
 import { ICoefficient } from '@/tools/types.ts'
 import { useNavigate } from 'react-router-dom'
+import './mainTop.scss'
 
 type MainTopProps = {
   showModelTable: boolean
@@ -29,8 +30,8 @@ const MainTop = ({ showModelTable, setShowModelTable, getData }: MainTopProps) =
     axios.get(`${API_URL}/coefficient/`)
       .then(res => {
         res.data.forEach((item: ICoefficient) => {
-          if (item.name === 'density') setDensity(item.value)
-          if (item.name === 'loosening') setLoosening(item.value)
+          if (item.name === 'density') setDensity(Number(item.value).toFixed())
+          if (item.name === 'loosening') setLoosening(Number(item.value).toFixed())
         })
         setInitialCoefficient({
           density: density,
@@ -111,8 +112,6 @@ const MainTop = ({ showModelTable, setShowModelTable, getData }: MainTopProps) =
           error={formError}
           disabled={formDisabled}
         />
-      </div>
-      <div>
         <p>Плотность руды:</p>
         <BaseInput
           type="number"

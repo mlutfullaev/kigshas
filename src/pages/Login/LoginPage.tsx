@@ -32,6 +32,7 @@ const LoginPage = () => {
       })
       .catch((e) => {
         if (e.response.status === 401) {
+          localStorage.removeItem('user')
           setErrorMessage('Неверный логин или пароль')
         }
       })

@@ -1,0 +1,27 @@
+.main-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  row-gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+
+  div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    p {
+      color: var(--blue);
+    }
+    input {
+      background: transparent;
+      border: 1px solid var(--dark-grey);
+
+      &:disabled {
+        background: var(--grey);
+        border-color: var(--grey);
+      }
+    }
+  }
+}
