@@ -31,7 +31,7 @@ const LoginPage = () => {
         navigate('/')
       })
       .catch((e) => {
-        if (e.response.data.detail === 'Invalid username/password.') {
+        if (e.response.status === 401) {
           setErrorMessage('Неверный логин или пароль')
         }
       })

@@ -1,11 +1,11 @@
 import './dashboardPage.scss'
 import Select from 'react-select'
-import { tableSizeOptions } from '@/assets/data.ts'
+import { tableSizeOptions } from '@/tools/data.ts'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
-import { IEvent } from '@/assets/types.ts'
-import { getTime } from '@/assets/helpers.ts'
+import { IEvent } from '@/tools/types.ts'
+import { getTime } from '@/tools/helpers.ts'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
 
 const dashboardHeaders = [

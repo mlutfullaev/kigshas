@@ -1,4 +1,4 @@
-import { SelectType } from '@/assets/types.ts'
+import { SelectType } from '@/tools/types.ts'
 import CreatableSelect from 'react-select/creatable'
 import Select from 'react-select'
 

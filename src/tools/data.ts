@@ -1,4 +1,4 @@
-import { ITableItem } from '@/assets/types.ts'
+import { ITableItem } from '@/tools/types.ts'
 
 export const mockTable: ITableItem = {
   id: 0,

@@ -6,8 +6,9 @@ import BaseModal from '@/components/BaseModal/BaseModal.tsx'
 import BaseSelect from '@/components/BaseSelect/BaseSelect.tsx'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
-import { IModel, IVehicle } from '@/assets/types.ts'
+import { IModel, IVehicle } from '@/tools/types.ts'
 import MainTop from '@/components/MainTop/MainTop.tsx'
+import {useNavigate} from "react-router-dom";
 
 const modelHeaders = [
   'Модель ШАС',
@@ -86,6 +87,7 @@ const modelOptions = [
 ]
 
 const MainPage = () => {
+  const navigate = useNavigate()
   const [vehicles, setVehicles] = useState<IVehicle[]>([])
   const [models, setModels] = useState<IModel[]>([])
   const [showModelTable, setShowModelTable] = useState(false)
@@ -109,9 +111,21 @@ const MainPage = () => {
       .then(res => {
         setVehicles(res.data)
       })
+      .catch(e => {
+        if (e.response.status === 401) {
+          localStorage.removeItem('user')
+          navigate('/login')
+        }
+      })
     axios.get(`${API_URL}/model/`)
       .then(res => {
         setModels(res.data)
+      })
+      .catch(e => {
+        if (e.response.status === 401) {
+          localStorage.removeItem('user')
+          navigate('/login')
+        }
       })
   }
 

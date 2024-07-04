@@ -1,8 +1,8 @@
 import './errorsPage.scss'
 import SearchTime from '@/components/SearchTime/SearchTime.tsx'
 import { useState } from 'react'
-import { DatePickerValue } from '@/assets/types.ts'
-import { getTime } from '@/assets/helpers.ts'
+import { DatePickerValue } from '@/tools/types.ts'
+import { getTime } from '@/tools/helpers.ts'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
 
 const ErrorsPage = () => {

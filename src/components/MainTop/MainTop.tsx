@@ -3,7 +3,8 @@ import BaseInput from '@/components/BaseInput/BaseInput.tsx'
 import arrowTop from '@/assets/icons/arrowTop.svg'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
-import { ICoefficient } from '@/assets/types.ts'
+import { ICoefficient } from '@/tools/types.ts'
+import { useNavigate } from 'react-router-dom'
 
 type MainTopProps = {
   showModelTable: boolean
@@ -12,6 +13,7 @@ type MainTopProps = {
 }
 
 const MainTop = ({ showModelTable, setShowModelTable, getData }: MainTopProps) => {
+  const navigate = useNavigate()
   const [initialCoefficient, setInitialCoefficient] = useState(
     {
       density: '',
@@ -34,6 +36,12 @@ const MainTop = ({ showModelTable, setShowModelTable, getData }: MainTopProps) =
           density: density,
           loosening: loosening
         })
+      })
+      .catch(e => {
+        if (e.response.status === 401) {
+          localStorage.removeItem('user')
+          navigate('/login')
+        }
       })
   }, [])
 
@@ -59,6 +67,12 @@ const MainTop = ({ showModelTable, setShowModelTable, getData }: MainTopProps) =
             loosening: value.loosening
           }))
         })
+        .catch(e => {
+          if (e.response.status === 401) {
+            localStorage.removeItem('user')
+            navigate('/login')
+          }
+        })
     }
     if (initialCoefficient.loosening !== loosening) {
       await axios.put(`${API_URL}/coefficient/2/`, {
@@ -71,6 +85,12 @@ const MainTop = ({ showModelTable, setShowModelTable, getData }: MainTopProps) =
             density: value.density,
             loosening
           }))
+        })
+        .catch(e => {
+          if (e.response.status === 401) {
+            localStorage.removeItem('user')
+            navigate('/login')
+          }
         })
     }
     if (changed) {

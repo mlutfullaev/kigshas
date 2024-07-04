@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { DatePickerValue } from '@/assets/types.ts'
+import { DatePickerValue } from '@/tools/types.ts'
 import SearchTime from '@/components/SearchTime/SearchTime.tsx'
-import { getTime } from '@/assets/helpers.ts'
+import { getTime } from '@/tools/helpers.ts'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
 
 const ServicesPage = () => {

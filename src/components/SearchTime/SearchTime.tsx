@@ -1,6 +1,6 @@
 import './searchTime.scss'
 import DatePicker from 'react-date-picker'
-import { DatePickerValue } from '@/assets/types.ts'
+import { DatePickerValue } from '@/tools/types.ts'
 
 type SearchTimeProps = {
   value: DatePickerValue;

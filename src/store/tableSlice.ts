@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { tableSizeOptions } from '@/assets/data.ts'
+import { tableSizeOptions } from '@/tools/data.ts'
 
 interface TableState {
   size: number
