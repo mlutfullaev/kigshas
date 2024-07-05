@@ -18,11 +18,10 @@ const dashboardHeaders = [
 ]
 const DashboardPage = () => {
   const [events, setEvents] = useState<IEvent[]>([])
-  const [nextPage, setNextPage] = useState(true)
+  const [eventsSize, setEventsSize] = useState(0)
   const [size, setSize] = useState(Number(localStorage.getItem('table_size')) || tableSizeOptions[0].value)
 
-  const getEvents = () => {
-    if (!nextPage) return
+  const getEvents = (size: number, events: IEvent[]) => {
     axios.get(`${API_URL}/events`, {
       params: {
         per_page: size,
@@ -31,21 +30,15 @@ const DashboardPage = () => {
     })
       .then(res => {
         setEvents(oldEvents => [...oldEvents, ...res.data.results])
-        if (!res.data.next) {
-          setNextPage(false)
-        }
+        setEventsSize(res.data.count)
       })
   }
 
   useEffect(() => {
     localStorage.setItem('table_size', size.toString())
     setEvents([])
-    getEvents()
+    getEvents(size, [])
   }, [size])
-
-  useEffect(() => {
-    getEvents()
-  }, [])
   
   return (
     <div className="dashboard-page">
@@ -63,7 +56,7 @@ const DashboardPage = () => {
       <BaseTable
         className="dashboard-table"
         headers={dashboardHeaders}
-        loadMore={getEvents}
+        loadMore={() => events.length < eventsSize && getEvents(size, events)}
       >
         {
           events.map(event => (

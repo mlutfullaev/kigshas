@@ -136,12 +136,24 @@ const MainPage = () => {
       return
     }
 
-    axios.put(`${API_URL}/vehicles/${activeItem?.id}/`, {
+    axios.put(`${API_URL}/vehicle/${activeItem?.id}/`, {
       number,
       rfid: mark.value,
       model: model.value
     })
       .then(() => {
+        setVehicles(oldVehicles => oldVehicles.map(vehicle => {
+          if (vehicle.id === activeItem?.id) {
+            return {
+              ...vehicle,
+              rfid: {
+                id: Number(mark.value),
+                rfid: mark.label
+              },
+            }
+          }
+          return vehicle
+        }))
         setEditModal(false)
       })
   }
@@ -161,7 +173,19 @@ const MainPage = () => {
     }
 
     axios.post(`${API_URL}/vehicle/`, data)
-      .then(() => {
+      .then(res => {
+        const newVehicle = {
+          ...res.data,
+          model: {
+            id: model.value,
+            name: model.label
+          },
+          rfid: {
+            id: mark.value,
+            rfid: mark.label
+          },
+        }
+        setVehicles(oldVehicles => [newVehicle, ...oldVehicles])
         setCreateModal(false)
       })
   }
