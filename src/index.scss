@@ -68,13 +68,8 @@ body {
 }
 
 .scrollable {
-  scrollbar-width: thin;
-  scrollbar-color: #00386C var(--light-grey);
-
-  &::-webkit-scrollbar {
-    width: 12px;
-    height: 8px;
-  }
+  scrollbar-width: auto;
+  scrollbar-color: #00386C transparent;
 
   &::-webkit-scrollbar-thumb {
     background-color: #333;
@@ -248,12 +243,19 @@ body {
       background: #FFDFDF;
       color: #FF5959;
     }
+    &.warning {
+      background: rgba(228, 228, 228, 1);
+      color: #000;
+    }
     @media (min-width: 3200px) {
       padding: 36px;
     }
   }
 }
 
+.error .main-select__control {
+  border: var(--red) 1px solid !important;
+}
 .main-select {
   &__control {
     border-radius: 8px !important;

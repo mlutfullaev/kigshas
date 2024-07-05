@@ -30,8 +30,8 @@ const MainTop = ({ showModelTable, setShowModelTable, getData }: MainTopProps) =
     axios.get(`${API_URL}/coefficient/`)
       .then(res => {
         res.data.forEach((item: ICoefficient) => {
-          if (item.name === 'density') setDensity(Number(item.value).toFixed())
-          if (item.name === 'loosening') setLoosening(Number(item.value).toFixed())
+          if (item.name === 'density') setDensity(item.value)
+          if (item.name === 'loosening') setLoosening(item.value)
         })
         setInitialCoefficient({
           density: density,

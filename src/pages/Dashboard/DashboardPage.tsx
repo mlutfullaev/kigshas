@@ -14,9 +14,9 @@ const dashboardHeaders = [
   '№ ШАС',
   'КИГ % тон',
   'Масса тонн',
-  '% Налипания в объеме'
+  '% Налипания по массе'
 ]
-const DashboardPage = () => {1
+const DashboardPage = () => {
   const [events, setEvents] = useState<IEvent[]>([])
   const [nextPage, setNextPage] = useState(true)
   const [size, setSize] = useState(Number(localStorage.getItem('table_size')) || tableSizeOptions[0].value)
@@ -39,6 +39,8 @@ const DashboardPage = () => {1
 
   useEffect(() => {
     localStorage.setItem('table_size', size.toString())
+    setEvents([])
+    getEvents()
   }, [size])
 
   useEffect(() => {
@@ -75,13 +77,13 @@ const DashboardPage = () => {1
               <div className={`table-item${!event.vehicle.number ? ' error' : ''}`}>
                 <p>{event.vehicle.number || 'Не удалось считать метку'}</p>
               </div>
-              <div className={`table-item${event.kig && Number(event.kig) < 90 ? ' error' : ''}`}>
+              <div className={`table-item${event.kig && Number(event.kig) < 40 ? ' warning' : Number(event.kig) < 80 ? ' error' : ''}`}>
                 <p>{event.kig ? event.kig + '%' : '-'}</p>
               </div>
               <div className="table-item">
                 <p>{Number(event.input_volume).toFixed(1) || '-'}</p>
               </div>
-              <div className={`table-item${event.sticking && Number(event.sticking) >= 10 ? ' error' : ''}`}>
+              <div className={`table-item${event.sticking && Number(event.sticking) >= 40 ? ' warning' : Number(event.sticking) >= 10 ? ' error' : ''}`}>
                 <p>{event.sticking ? event.sticking + '%' : '-'}</p>
               </div>
             </div>

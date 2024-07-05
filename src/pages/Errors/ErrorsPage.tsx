@@ -1,12 +1,21 @@
 import './errorsPage.scss'
 import SearchTime from '@/components/SearchTime/SearchTime.tsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DatePickerValue } from '@/tools/types.ts'
 import { getTime } from '@/tools/helpers.ts'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
+import axios from 'axios'
+import { API_URL } from '@/main.tsx'
 
 const ErrorsPage = () => {
   const [searchDate, setSearchDate] = useState<DatePickerValue>(new Date())
+
+  useEffect(() => {
+    axios.get(`${API_URL}/fault/`)
+      .then(res => {
+        console.log(res.data.results)
+      })
+  })
 
   return (
     <div className="errors-page page-content">

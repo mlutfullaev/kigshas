@@ -10,7 +10,9 @@ import axios from 'axios'
 
 axios.interceptors.request.use(
   (config) => {
-    const { username, password } = JSON.parse(localStorage.getItem('user') || '')
+    const user = localStorage.getItem('user')
+    if (!user) return config
+    const { username, password } = JSON.parse(user)
 
     if (username && password) {
       config.auth = { username, password }

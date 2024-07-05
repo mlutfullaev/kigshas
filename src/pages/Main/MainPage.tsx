@@ -6,9 +6,9 @@ import BaseModal from '@/components/BaseModal/BaseModal.tsx'
 import BaseSelect from '@/components/BaseSelect/BaseSelect.tsx'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
-import { IModel, IVehicle } from '@/tools/types.ts'
+import { IModel, IRfid, IVehicle, SelectType } from '@/tools/types.ts'
 import MainTop from '@/components/MainTop/MainTop.tsx'
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 
 const modelHeaders = [
   'Модель ШАС',
@@ -17,87 +17,23 @@ const modelHeaders = [
   'Масса паспортная ( КИГ пасп)'
 ]
 
-const numberOptions = [
-  {
-    value: '123',
-    label: '123',
-  },
-  {
-    value: '000000000000000000000310',
-    label: '000000000000000000000310',
-  },
-  {
-    value: '000000000000000000000320',
-    label: '000000000000000000000320',
-  },
-  {
-    value: '000000000000000000000330',
-    label: '000000000000000000000330',
-  },
-  {
-    value: '000000000000000000000340',
-    label: '000000000000000000000340',
-  },
-  {
-    value: '000000000000000000000350',
-    label: '000000000000000000000350',
-  }
-]
-
-const markOptions = [
-  {
-    value: '0000000310',
-    label: '0000000310',
-  },
-  {
-    value: '0000000320',
-    label: '0000000320',
-  },
-  {
-    value: '0000000330',
-    label: '0000000330',
-  },
-  {
-    value: '0000000340',
-    label: '0000000340',
-  },
-  {
-    value: '0000000350',
-    label: '0000000350',
-  }
-]
-
-const modelOptions = [
-  {
-    value: 'Model',
-    label: 'Model',
-  },
-  {
-    value: 'Model1',
-    label: 'Model1',
-  },
-  {
-    value: 'Model2',
-    label: 'Model2',
-  },
-  {
-    value: 'Model3',
-    label: 'Model3',
-  },
-]
-
 const MainPage = () => {
   const navigate = useNavigate()
   const [vehicles, setVehicles] = useState<IVehicle[]>([])
   const [models, setModels] = useState<IModel[]>([])
   const [showModelTable, setShowModelTable] = useState(false)
+
   const [deleteModal, setDeleteModal] = useState(false)
   const [createModal, setCreateModal] = useState(false)
   const [editModal, setEditModal] = useState(false)
+  const [activeItem, setActiveItem] = useState<null | IVehicle>(null)
+  const [formError, setFormError] = useState(false)
+  
   const [number, setNumber] = useState('')
-  const [mark, setMark] = useState('')
-  const [model, setModel] = useState('')
-  const [activeItem, setActiveItem] = useState<null | number>(null)
+  const [mark, setMark] = useState<SelectType | null>(null)
+  const [model, setModel] = useState<SelectType | null>(null)
+  const [markOptions, setMarkOptions] = useState<SelectType[]>([])
+  const [modelOptions, setModelOptions] = useState<SelectType[]>([])
 
   const mainHeaders = [
     '№ ШАС',
@@ -117,9 +53,14 @@ const MainPage = () => {
           navigate('/login')
         }
       })
-    axios.get(`${API_URL}/model/`)
+    axios.get(`${API_URL}/models/`)
       .then(res => {
         setModels(res.data)
+        setModelOptions(res.data.map((item: IModel) => ({
+          value: item.id.toString(),
+          label: item.name
+        }))
+        )
       })
       .catch(e => {
         if (e.response.status === 401) {
@@ -131,31 +72,105 @@ const MainPage = () => {
 
   useEffect(() => {
     getData()
+    axios.get(`${API_URL}/rfid/`)
+      .then(res => {
+        setMarkOptions(res.data.map((item: IRfid) => ({
+          value: item.id.toString(),
+          label: item.rfid
+        })))
+      })
   }, [])
 
-  const onCreateSHAS = () => {
-    setCreateModal(false)
-  }
+  useEffect(() => {
+    if (!createModal && !editModal && !deleteModal) {
+      setActiveItem(null)
+      setFormError(false)
+      setNumber('')
+      setMark(null)
+      setModel(null)
+    }
+  }, [createModal, editModal, deleteModal])
 
-  const createNumberOption = (value: string) => {
-    if (numberOptions.some(obj => obj.value === value)) return
-    setNumber(value)
-  }
   const createMarkOption = (value: string) => {
     if (markOptions.some(obj => obj.value === value)) return
-    setMark(value)
+    axios.post(`${API_URL}/rfid/`, {
+      rfid: value
+    })
+      .then(res => {
+        setMarkOptions(oldOptions => [...oldOptions, {
+          value: res.data.id.toString(),
+          label: res.data.rfid
+        }])
+        setMark({
+          value: res.data.id.toString(),
+          label: res.data.rfid
+        })
+      })
+  }
+
+  const openEditModal = (vehicle: IVehicle) => {
+    setActiveItem(vehicle)
+    setNumber(vehicle.number)
+    setMark({
+      value: vehicle.rfid.id.toString(),
+      label: vehicle.rfid.rfid
+    })
+    setModel({
+      value: vehicle.model.id.toString(),
+      label: vehicle.model.name
+    })
+    setEditModal(true)
   }
 
   const onEditSHAS = () => {
-    console.log(activeItem)
-    setEditModal(false)
+    if (!mark?.value || !model?.value || !number) {
+      setFormError(true)
+      return
+    }
+
+    if (formError) setFormError(false)
+
+    if (activeItem?.rfid.id === Number(mark.value)) {
+      console.log(2)
+      setEditModal(false)
+      return
+    }
+
+    axios.put(`${API_URL}/vehicles/${activeItem?.id}/`, {
+      number,
+      rfid: mark.value,
+      model: model.value
+    })
+      .then(() => {
+        setEditModal(false)
+      })
+  }
+
+  const onCreateSHAS = () => {
+    if (!number.length || !mark?.value || !model?.value) {
+      setFormError(true)
+      return
+    }
+
+    if (formError) setFormError(false)
+
+    const data = {
+      number,
+      rfid: Number(mark?.value),
+      model: Number(model?.value)
+    }
+
+    axios.post(`${API_URL}/vehicle/`, data)
+      .then(() => {
+        setCreateModal(false)
+      })
   }
 
   const onDeleteVehicle = () => {
     if (activeItem === null) return
-    axios.delete(`${API_URL}/vehicles/${activeItem}/`)
+    axios.delete(`${API_URL}/vehicles/${activeItem.id}/`)
       .then(() => {
-        setVehicles(vehicles.filter(vehicle => vehicle.id !== activeItem))
+        setVehicles(vehicles.filter(vehicle => vehicle.id !== activeItem.id))
         setActiveItem(null)
         setDeleteModal(false)
       })
@@ -163,7 +178,7 @@ const MainPage = () => {
 
   return (
     <div className="main-page page-content">
-      <MainTop showModelTable={showModelTable} setShowModelTable={setShowModelTable} getData={getData} />
+      <MainTop showModelTable={showModelTable} setShowModelTable={setShowModelTable} getData={getData}/>
       {
         showModelTable && <BaseTable className="main-model-table" headers={modelHeaders}>
           {
@@ -202,16 +217,15 @@ const MainPage = () => {
                 <p>{vehicle.model.name}</p>
               </div>
               <div className="table-item">
-                <button className="btn-orange" onClick={() => {
-                  setEditModal(true)
-                  setActiveItem(vehicle.id)
-                }}>Изменить</button>
+                <button className="btn-orange" onClick={() => openEditModal(vehicle)}>Изменить
+                </button>
               </div>
               <div className="table-item">
                 <button className="btn-red" onClick={() => {
-                  setActiveItem(vehicle.id)
+                  setActiveItem(vehicle)
                   setDeleteModal(true)
-                }}>Удалить</button>
+                }}>Удалить
+                </button>
               </div>
             </div>
           ))
@@ -224,7 +238,8 @@ const MainPage = () => {
           <button className="btn btn-green" onClick={() => {
             setActiveItem(null)
             setDeleteModal(false)
-          }}>Отмена</button>
+          }}>Отмена
+          </button>
         </div>
       </BaseModal>
       <BaseModal active={createModal} hide={() => setCreateModal(false)}>
@@ -232,16 +247,16 @@ const MainPage = () => {
         <label className="base-label">
           Номер ШАС
         </label>
-        <BaseSelect
+        <BaseInput
+          error={formError}
           state={number}
           setState={setNumber}
-          onCreate={createNumberOption}
-          options={numberOptions}
         />
         <label className="base-label">
           Метка
         </label>
         <BaseSelect
+          error={formError}
           state={mark}
           setState={setMark}
           onCreate={createMarkOption}
@@ -251,6 +266,7 @@ const MainPage = () => {
           Модель
         </label>
         <BaseSelect
+          error={formError}
           state={model}
           setState={setModel}
           options={modelOptions}
@@ -264,15 +280,17 @@ const MainPage = () => {
         <label className="base-label">
           Номер ШАС
         </label>
-        <BaseInput
-          state={number}
-          setState={setNumber}
+        <input
+          type="text"
+          className="base-input"
+          value={number}
           disabled={true}
         />
         <label className="base-label">
           Метка
         </label>
         <BaseSelect
+          error={formError}
           state={mark}
           setState={setMark}
           onCreate={createMarkOption}
@@ -281,9 +299,10 @@ const MainPage = () => {
         <label className="base-label">
           Модель
         </label>
-        <BaseInput
-          state={model}
-          setState={setModel}
+        <input
+          type="text"
+          className="base-input"
+          value={model?.label}
           disabled={true}
         />
         <div className="modal-buttons">

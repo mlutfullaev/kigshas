@@ -1,25 +1,31 @@
 import { SelectType } from '@/tools/types.ts'
 import CreatableSelect from 'react-select/creatable'
-import Select from 'react-select'
+import Select, { SingleValue } from 'react-select'
 
 type BaseSelectProps = {
-  state: string
-  setState: (value: string) => void
+  state: SelectType | null
+  setState: (value: SelectType) => void
   onCreate?: (value: string) => void
+  error?: boolean
   options: SelectType[]
 }
 
-const BaseSelect = ({ state, setState, onCreate, options }: BaseSelectProps) => {
+const BaseSelect = ({ state, setState, onCreate, options, error }: BaseSelectProps) => {
+  const baseOptions = {
+    value: state,
+    onChange: (e: SingleValue<SelectType>) => e && setState(e),
+    options: options,
+    classNamePrefix: 'main-select',
+    className: error && !state ? 'error' : '',
+    placeholder: 'Выберите',
+    closeMenuOnScroll: true,
+    noOptionsMessage: () => <span>Нету варианта</span>,
+  }
   if (onCreate) {
     return (
       <CreatableSelect
-        value={{ value: state, label: state }}
-        onChange={(e) => setState(e?.value || '')}
-        options={options}
-        classNamePrefix="main-select"
-        closeMenuOnScroll={true}
+        {...baseOptions}
         isSearchable={true}
-        noOptionsMessage={() => <span>Нету варианта</span>}
         formatCreateLabel={(obj) => <span>Создать {obj}</span>}
         onCreateOption={onCreate}
       />
@@ -27,11 +33,8 @@ const BaseSelect = ({ state, setState, onCreate, options }: BaseSelectProps) => 
   }
   return (
     <Select
-      value={{ value: state, label: state }}
-      onChange={(e) => setState(e?.value || '')}
-      options={options}
-      classNamePrefix="main-select"
-      closeMenuOnScroll={true}
+      {...baseOptions}
+      isSearchable={false}
       noOptionsMessage={() => <span>Нету варианта</span>}
     />
   )
