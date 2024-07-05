@@ -25,8 +25,18 @@
       }
     }
   }
-  .dashboard-table .table-column {
-    grid-template-columns: repeat(6, 1fr);
+  .dashboard-table {
+    max-height: calc(100vh - 230px);
+
+    @media (max-width: 1600px) {
+      max-height: calc(100vh - 200px);
+    }
+    @media (min-width: 1770px) {
+      max-height: calc(100vh - 225px);
+    }
+    .table-column {
+      grid-template-columns: repeat(6, 1fr);
+    }
   }
   .dashboard-select {
     &__control {

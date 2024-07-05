@@ -14,7 +14,8 @@ const BaseTable = ({ className, headers, loadMore, children }: BaseTableProps) =
     const handleScroll = () => {
       if (scrollRef.current) {
         const { scrollTop, scrollHeight, clientHeight } = scrollRef.current
-        if (scrollTop + clientHeight >= scrollHeight) {
+        // console.log(scrollTop + clientHeight, scrollHeight)
+        if (scrollTop + clientHeight + 0.5 >= scrollHeight) {
           if (loadMore) {
             loadMore()
           }
