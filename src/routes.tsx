@@ -26,7 +26,7 @@ export default [
     route: '/errors',
   },
   {
-    header: 'Аварий системы',
+    header: 'Аварии системы',
     sidebar: true,
     component: <ProtectedRoute><ServicesPage /></ProtectedRoute>,
     route: '/services',
