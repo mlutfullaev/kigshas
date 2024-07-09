@@ -74,7 +74,7 @@ const DashboardPage = () => {
                 <p>{event.kig ? event.kig + '%' : '-'}</p>
               </div>
               <div className="table-item">
-                <p>{Number(event.input_volume).toFixed(1) || '-'}</p>
+                <p>{Number(event.mass).toFixed(1) || '-'}</p>
               </div>
               <div className={`table-item${event.sticking && Number(event.sticking) >= 40 ? ' warning' : Number(event.sticking) >= 10 ? ' error' : ''}`}>
                 <p>{event.sticking ? event.sticking + '%' : '-'}</p>

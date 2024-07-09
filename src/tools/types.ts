@@ -78,4 +78,5 @@ export interface IEvent {
   oversized: boolean
   sticking: string
   kig: string
+  mass: string
 }
