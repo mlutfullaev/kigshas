@@ -80,3 +80,21 @@ export interface IEvent {
   kig: string
   mass: string
 }
+
+export interface IFault {
+  id: number,
+  vehicle: null | IVehicle,
+  service: IService,
+  name: string,
+  code: string,
+  check_in_time: string,
+  check_out_time: string,
+  input_volume: string,
+  output_volume: string,
+  unloaded_volume: string,
+  technical_road: boolean,
+  oversized: boolean,
+  sticking: string,
+  kig: string,
+  mass: string
+}

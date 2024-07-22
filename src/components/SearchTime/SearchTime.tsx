@@ -5,9 +5,10 @@ import { DatePickerValue } from '@/tools/types.ts'
 type SearchTimeProps = {
   value: DatePickerValue;
   setValue: (value: DatePickerValue) => void;
+  onSearch: () => void;
 }
 
-const SearchTime = ({ value, setValue }: SearchTimeProps) => {
+const SearchTime = ({ value, setValue, onSearch }: SearchTimeProps) => {
   return (
     <div className="search-time">
       <div className="search-time-input">
@@ -18,7 +19,7 @@ const SearchTime = ({ value, setValue }: SearchTimeProps) => {
           clearIcon={null}
         />
       </div>
-      <button className="btn btn-blue">Поиск</button>
+      <button onClick={onSearch} className="btn btn-blue">Поиск</button>
     </div>
   )
 }

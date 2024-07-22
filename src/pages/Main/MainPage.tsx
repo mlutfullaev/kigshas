@@ -43,7 +43,7 @@ const MainPage = () => {
   ]
 
   const getData = () => {
-    axios.get(`${API_URL}/vehicles`)
+    axios.get(`${API_URL}/vehicles/`)
       .then(res => {
         setVehicles(res.data)
       })

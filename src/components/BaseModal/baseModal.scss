@@ -12,6 +12,10 @@
   justify-content: center;
   align-items: center;
 
+  h2 {
+    font-size: 20px;
+    text-align: center;
+  }
   &.active {
     display: flex;
   }

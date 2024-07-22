@@ -26,7 +26,7 @@ const LoginPage = () => {
     }
 
     localStorage.setItem('user', JSON.stringify(data))
-    axios.get(`${API_URL}/coefficient`)
+    axios.get(`${API_URL}/coefficient/`)
       .then(() => {
         navigate('/')
       })

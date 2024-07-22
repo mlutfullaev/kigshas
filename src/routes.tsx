@@ -23,13 +23,13 @@ export default [
     header: 'Ошибки системы',
     sidebar: true,
     component: <ProtectedRoute><ErrorsPage /></ProtectedRoute>,
-    route: '/errors',
+    route: '/warnings',
   },
   {
     header: 'Аварии системы',
     sidebar: true,
     component: <ProtectedRoute><ServicesPage /></ProtectedRoute>,
-    route: '/services',
+    route: '/faults',
   },
   {
     header: 'Рабочий стол администратора',
