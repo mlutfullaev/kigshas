@@ -13,7 +13,7 @@ RUN npm install
 # Копируйте остальные файлы приложения
 COPY . .
 
-EXPOSE 80
+EXPOSE 5173
 
 # Запуск Vite сервера разработки
 CMD ["npm", "run", "dev"]
