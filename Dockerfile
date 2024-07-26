@@ -1,21 +1,20 @@
-# Fetching the latest node image on alpine linux
-FROM node:20-alpine
+# Используйте последний Node.js 18 LTS в качестве базового образа
+FROM node:18
 
-# Declaring env
-ENV NODE_ENV development
-
-# Setting up the work directory
+# Установите рабочую директорию
 WORKDIR /app
 
-# Installing dependencies
-COPY ./package*.json .
+# Копируйте package.json и package-lock.json (если он есть)
+COPY package*.json ./
 
+# Установите зависимости
 RUN npm install
 
-# Copying all the files in our project
+# Копируйте остальные файлы приложения
 COPY . .
 
-EXPOSE 80
+# Откройте порт 80
+EXPOSE 5173
 
-# Starting our application
-CMD [ "npm", "run", "dev" ]
+# Запуск Vite сервера разработки
+CMD ["npm", "run", "dev"]
