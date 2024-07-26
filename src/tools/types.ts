@@ -39,6 +39,9 @@ export interface IRfid {
 export interface IDescent {
   id: number
   name: string
+  last_request: string,
+  status: 'active' | 'error'
+  token: string
 }
 
 export interface IVehicle {

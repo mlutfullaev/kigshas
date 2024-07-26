@@ -6,7 +6,7 @@ import BaseTable from '@/components/BaseTable/BaseTable.tsx'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
 
-const ServicesPage = () => {
+const FaultsPage = () => {
   const [searchDate, setSearchDate] = useState<DatePickerValue>(new Date())
   const [faults, setFaults] = useState<IFault[]>([])
 
@@ -30,7 +30,7 @@ const ServicesPage = () => {
   }
   
   return (
-    <div className="services-page page-content">
+    <div className="faults-page page-content">
       <SearchTime value={searchDate} setValue={setSearchDate} onSearch={onSearch} />
       <BaseTable className="errors-table" headers={['Время', 'Ошибка']}>
         {
@@ -50,4 +50,4 @@ const ServicesPage = () => {
   )
 }
 
-export default ServicesPage
+export default FaultsPage
