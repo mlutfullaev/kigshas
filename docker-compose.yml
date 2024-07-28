@@ -1,0 +1,6 @@
+version: '3'
+services:
+  my_service:
+    image: kigshas-front:latest
+    ports:
+      - "80:80"
