@@ -51,7 +51,7 @@ const DashboardPage = () => {
     axios.get(`${API_URL}/events/`, {
       params: {
         per_page: size,
-        page: Math.ceil(events.length / size) + 2,
+        page: Math.ceil(events.length / size) + 1,
       }
     })
       .then(res => {
@@ -101,8 +101,8 @@ const DashboardPage = () => {
               <div className="table-item">
                 <p>{event.service.descent.name || '-'}</p>
               </div>
-              <div className={`table-item${!event.vehicle.number ? ' error' : ''}`}>
-                <p>{event.vehicle.number || 'Не удалось считать метку'}</p>
+              <div className={`table-item${!event.vehicle?.number ? ' error' : ''}`}>
+                <p>{event.vehicle?.number || 'Не удалось считать метку'}</p>
               </div>
               <div className={`table-item${event.kig && Number(event.kig) < 40 ? ' warning' : Number(event.kig) < 80 ? ' error' : ''}`}>
                 <p>{event.kig ? event.kig + '%' : '-'}</p>

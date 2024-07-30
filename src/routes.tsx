@@ -2,9 +2,8 @@ import DashboardPage from '@/pages/Dashboard/DashboardPage.tsx'
 import MainPage from '@/pages/Main/MainPage.tsx'
 import LoginPage from '@/pages/Login/LoginPage.tsx'
 import ProtectedRoute from '@/components/ProtectedRote/ProtectedRoute.tsx'
-import FaultsPage from '@/pages/Faults/FaultsPage.tsx'
 import ErrorsPage from '@/pages/Errors/ErrorsPage.tsx'
-import SupportStatus from '@/pages/SupportStatus/SupportStatus.tsx'
+import Services from '@/pages/Services/Services.tsx'
 
 export default [
   {
@@ -16,19 +15,19 @@ export default [
   {
     header: 'Cостояние служб',
     sidebar: true,
-    component: <ProtectedRoute><SupportStatus /></ProtectedRoute>,
-    route: '/support-status',
+    component: <ProtectedRoute><Services /></ProtectedRoute>,
+    route: '/services',
   },
   {
     header: 'Ошибки системы',
     sidebar: true,
-    component: <ProtectedRoute><ErrorsPage /></ProtectedRoute>,
+    component: <ProtectedRoute><ErrorsPage type={'warning'} /></ProtectedRoute>,
     route: '/warnings',
   },
   {
     header: 'Аварии системы',
     sidebar: true,
-    component: <ProtectedRoute><FaultsPage /></ProtectedRoute>,
+    component: <ProtectedRoute><ErrorsPage type={'fault'} /></ProtectedRoute>,
     route: '/faults',
   },
   {

@@ -1,18 +1,18 @@
-import './supportStatus.scss'
+import './services.scss'
 import successIcon from '../../assets/icons/success.svg'
 import errorIcon from '../../assets/icons/error.svg'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
-import { IDescent } from '@/tools/types.ts'
+import { IService } from '@/tools/types.ts'
 
-const SupportStatus = () => {
-  const [descents, setDescents] = useState<IDescent[]>([])
+const Services = () => {
+  const [services, setServices] = useState<IService[]>([])
 
   useEffect(() => {
     axios.get(`${API_URL}/services/`)
       .then(res => {
-        setDescents(res.data)
+        setServices(res.data)
       })
   }, [])
 
@@ -21,13 +21,13 @@ const SupportStatus = () => {
   }
   
   return (
-    <div className="page-content support-status-page">
+    <div className="page-content services-page">
       <ul>
         {
-          descents.map(descent =>
-            <li key={descent.id}>
-              <p>{descent.name}</p>
-              <img src={descent.status === 'active' ? successIcon : errorIcon} alt="status"/>
+          services.map(service =>
+            <li key={service.id}>
+              <p>{service.name} {service.descent.name}</p>
+              <img src={service.status === 'active' ? successIcon : errorIcon} alt="status"/>
             </li>
           )
         }
@@ -37,4 +37,4 @@ const SupportStatus = () => {
   )
 }
 
-export default SupportStatus
+export default Services

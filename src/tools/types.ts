@@ -39,9 +39,6 @@ export interface IRfid {
 export interface IDescent {
   id: number
   name: string
-  last_request: string,
-  status: 'active' | 'error'
-  token: string
 }
 
 export interface IVehicle {
@@ -58,6 +55,7 @@ export interface IService {
   sid: string
   token: string
   last_request: string
+  status: 'active' | 'error'
 }
 
 export interface IError {
@@ -69,7 +67,7 @@ export interface IError {
 
 export interface IEvent {
   id: number
-  vehicle: IVehicle
+  vehicle: null | IVehicle
   error: IError
   service: IService
   check_in_time: string

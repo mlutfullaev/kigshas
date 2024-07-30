@@ -16,7 +16,6 @@ const SearchTime = ({ value, setValue, onSearch }: SearchTimeProps) => {
         <DatePicker
           value={value}
           onChange={setValue}
-          clearIcon={null}
         />
       </div>
       <button onClick={onSearch} className="btn btn-blue">Поиск</button>
