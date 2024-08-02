@@ -63,7 +63,7 @@ const ErrorsPage = ({ type, tableName }: ErrorsPageProps) => {
       <SearchTime value={searchDate} setValue={setSearchDate} onSearch={onSearch}/>
       <BaseTable
         className="errors-table"
-        headers={['Время', tableName, '№ Рудоспуска']}
+        headers={['Время', tableName, 'Сервис']}
         loadMore={() => faults.length < faultsCount && getFaults(faults, type)}
       >
         {
