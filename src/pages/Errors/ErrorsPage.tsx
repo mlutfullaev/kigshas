@@ -76,7 +76,7 @@ const ErrorsPage = ({ type, tableName }: ErrorsPageProps) => {
                 <p>{fault.name}</p>
               </div>
               <div className="table-item error">
-                <p>{fault.service.descent.name}</p>
+                <p>{fault.service.name} {fault.service.descent.name}</p>
               </div>
             </div>
           )
