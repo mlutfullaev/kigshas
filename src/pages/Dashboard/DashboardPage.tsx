@@ -41,8 +41,17 @@ const DashboardPage = () => {
         })
         setDisconnectedModal(true)
       } else {
+        const newEvent = {
+          ...data,
+          service: {
+            ...data.service,
+            descent: {
+              name: data.service.descent,
+            }
+          }
+        }
         setNewItem(oldItems => ++oldItems)
-        setEvents(events => [data, ...events])
+        setEvents(events => [newEvent, ...events])
       }
     }
 
