@@ -55,7 +55,7 @@ export interface IService {
   sid: string
   token: string
   last_request: string
-  status: 'active' | 'error'
+  status: 'online' | 'error' | 'offline'
 }
 
 export interface IError {

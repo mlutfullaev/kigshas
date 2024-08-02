@@ -6,16 +6,19 @@ import { getTime, getTimeForBack } from '@/tools/helpers.ts'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
+import { useNavigate } from 'react-router-dom'
 
 type ErrorsPageProps = {
   type: string
+  tableName: string
 }
 
-const ErrorsPage = ({ type }: ErrorsPageProps) => {
+const ErrorsPage = ({ type, tableName }: ErrorsPageProps) => {
   const [searchDate, setSearchDate] = useState<DatePickerValue>(null)
   const [search, setSearch] = useState('')
   const [faults, setFaults] = useState<IFault[]>([])
   const [faultsCount, setFaultsCount] = useState(0)
+  const navigate = useNavigate()
 
   const getFaults = useCallback((faults: IFault[], type: string) => {
     const params = {
@@ -28,6 +31,12 @@ const ErrorsPage = ({ type }: ErrorsPageProps) => {
       .then(res => {
         setFaults(oldFaults => [...oldFaults, ...res.data.results])
         setFaultsCount(res.data.count)
+      })
+      .catch(e => {
+        if (e.response.status === 401) {
+          localStorage.removeItem('user')
+          navigate('/login')
+        }
       })
   }, [search])
 
@@ -54,7 +63,7 @@ const ErrorsPage = ({ type }: ErrorsPageProps) => {
       <SearchTime value={searchDate} setValue={setSearchDate} onSearch={onSearch}/>
       <BaseTable
         className="errors-table"
-        headers={['Время', 'Ошибка']}
+        headers={['Время', tableName, '№ Рудоспуска']}
         loadMore={() => faults.length < faultsCount && getFaults(faults, type)}
       >
         {
@@ -65,6 +74,9 @@ const ErrorsPage = ({ type }: ErrorsPageProps) => {
               </div>
               <div className="table-item error">
                 <p>{fault.name}</p>
+              </div>
+              <div className="table-item error">
+                <p>{fault.service.descent.name}</p>
               </div>
             </div>
           )

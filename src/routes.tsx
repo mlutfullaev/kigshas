@@ -21,13 +21,13 @@ export default [
   {
     header: 'Ошибки системы',
     sidebar: true,
-    component: <ProtectedRoute><ErrorsPage type={'warning'} /></ProtectedRoute>,
+    component: <ProtectedRoute><ErrorsPage type='warning' tableName="Ошибка" /></ProtectedRoute>,
     route: '/warnings',
   },
   {
     header: 'Аварии системы',
     sidebar: true,
-    component: <ProtectedRoute><ErrorsPage type={'fault'} /></ProtectedRoute>,
+    component: <ProtectedRoute><ErrorsPage type='fault' tableName="Авария" /></ProtectedRoute>,
     route: '/faults',
   },
   {
