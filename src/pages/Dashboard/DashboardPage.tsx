@@ -23,6 +23,7 @@ const DashboardPage = () => {
   const [size, setSize] = useState(Number(localStorage.getItem('table_size')) || tableSizeOptions[0].value)
   const [newItem, setNewItem] = useState(0)
   const [disconnectedModal, setDisconnectedModal] = useState(false)
+  const [modalContent, setModalContent] = useState<null | { subtitle?: string, title: string }>(null)
 
   useEffect(() => {
     const socket = new WebSocket('ws://localhost:8000/ws')
@@ -33,12 +34,21 @@ const DashboardPage = () => {
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data)
-      setNewItem(oldItems => ++oldItems)
-      setEvents(events => [data, ...events])
+      if (data.code) {
+        setModalContent({
+          subtitle: data.code,
+          title: data.name,
+        })
+        setDisconnectedModal(true)
+      } else {
+        setNewItem(oldItems => ++oldItems)
+        setEvents(events => [data, ...events])
+      }
     }
 
     socket.onclose = () => {
       console.log('Disconnected from the WebSocket')
+      setModalContent({ title: 'Потеря связи с сервером' })
       setDisconnectedModal(true)
     }
 
@@ -121,7 +131,11 @@ const DashboardPage = () => {
         active={disconnectedModal}
         hide={() => setDisconnectedModal(false)}
       >
-        <h2 className="red">Потеря связи c сервером</h2>
+        {
+          modalContent?.subtitle ? <p className="subtitle">{modalContent.subtitle}</p> : null
+        }
+
+        <h2 className="title">{modalContent?.title}</h2>
       </BaseModal>
     </div>
   )

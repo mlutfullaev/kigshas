@@ -16,6 +16,25 @@
     font-size: 20px;
     text-align: center;
   }
+  .title {
+    color: var(--red);
+    font-size: 45px;
+    text-align: center;
+
+    @media (min-width: 3200px) {
+      font-size: 120px;
+    }
+  }
+  .subtitle {
+    font-size: 24px;
+    text-align: center;
+    padding-bottom: 20px;
+
+    @media (min-width: 3200px) {
+      font-size: 60px;
+      padding-bottom: 40px;
+    }
+  }
   &.active {
     display: flex;
   }
