@@ -114,7 +114,7 @@ const DashboardPage = () => {
           setModalContents(oldItems =>
             oldItems.filter(item => item.service_id !== modalContent.service_id)
           )
-        }, 10000)
+        }, 3000)
 
         return () => {
           clearTimeout(timeout)
