@@ -7,7 +7,6 @@ import { API_URL } from '@/main.tsx'
 import { IEvent } from '@/tools/types.ts'
 import { getTime } from '@/tools/helpers.ts'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
-import BaseModal from '@/components/BaseModal/BaseModal.tsx'
 
 const dashboardHeaders = [
   'Время',
@@ -17,13 +16,17 @@ const dashboardHeaders = [
   'Масса тонн',
   '% Налипания по массе'
 ]
+type IModalContent = {
+  service_id: number,
+  code?: string,
+  name: string
+}
 const DashboardPage = () => {
   const [events, setEvents] = useState<IEvent[]>([])
   const [eventsSize, setEventsSize] = useState(0)
   const [size, setSize] = useState(Number(localStorage.getItem('table_size')) || tableSizeOptions[0].value)
   const [newItem, setNewItem] = useState(0)
-  const [disconnectedModal, setDisconnectedModal] = useState(false)
-  const [modalContent, setModalContent] = useState<null | { subtitle?: string, title: string }>(null)
+  const [modalContents, setModalContents] = useState<IModalContent[]>([])
 
   useEffect(() => {
     const socket = new WebSocket('ws://localhost:8000/ws')
@@ -35,14 +38,27 @@ const DashboardPage = () => {
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data)
       console.log(data)
+
+      // Service Online
+      if (!data.id && data.service.status === 'online') {
+        setModalContents(oldItems => oldItems.filter(item => Number(item.service_id) !== Number(data.service.id)))
+        return
+      }
+
+      // Ошибка или Авария
       if (data.code) {
-        setModalContent({
-          subtitle: data.code,
-          title: data.name,
-        })
-        setDisconnectedModal(true)
+        const modalContent: IModalContent = {
+          code: data.code,
+          name: data.name,
+          service_id: data.service_id
+        }
+        setModalContents(oldItems =>
+          [...oldItems.filter(item => item.service_id !== data.service_id), modalContent]
+        )
         if (Number(data.code) <= 100) return
       }
+
+      // Добавление в таблицу
       const newEvent = {
         ...data,
         service: {
@@ -58,8 +74,6 @@ const DashboardPage = () => {
 
     socket.onclose = () => {
       console.log('Disconnected from the WebSocket')
-      setModalContent({ title: 'Потеря связи с сервером' })
-      setDisconnectedModal(true)
     }
 
     return () => {
@@ -93,16 +107,21 @@ const DashboardPage = () => {
   }, [size])
 
   useEffect(() => {
-    if (Number(modalContent?.subtitle) > 100) {
-      const timeout = setTimeout(() => {
-        setDisconnectedModal(false)
-      }, 3000)
+    modalContents.forEach(modalContent => {
+      // Удаление ошибки
+      if (Number(modalContent.code) > 100) {
+        const timeout = setTimeout(() => {
+          setModalContents(oldItems =>
+            oldItems.filter(item => item.service_id !== modalContent.service_id)
+          )
+        }, 10000)
 
-      return () => {
-        clearTimeout(timeout)
+        return () => {
+          clearTimeout(timeout)
+        }
       }
-    }
-  }, [disconnectedModal, modalContent])
+    })
+  }, [modalContents])
   
   return (
     <div className="dashboard-page">
@@ -149,15 +168,27 @@ const DashboardPage = () => {
           ))
         }
       </BaseTable>
-      <BaseModal
-        active={disconnectedModal}
-      >
-        {
-          modalContent?.subtitle ? <p className="subtitle">{modalContent.subtitle}</p> : null
-        }
+      {/*<BaseModal*/}
+      {/*  active={disconnectedModal}*/}
+      {/*>*/}
+      {/*  {*/}
+      {/*    modalContent?.subtitle ? <p className="subtitle">{modalContent.subtitle}</p> : null*/}
+      {/*  }*/}
 
-        <h2 className="title">{modalContent?.title}</h2>
-      </BaseModal>
+      {/*  <h2 className="title">{modalContent?.title}</h2>*/}
+      {/*</BaseModal>*/}
+      <div className={`modal${modalContents.length ? ' active' : ''}`}>
+        {
+          modalContents.map(modalContent => (
+            <div className="modal-content" key={modalContent.id}>
+              {
+                modalContent.code ? <p className="subtitle">Критическая {modalContent.code}</p> : null
+              }
+              <h2 className="title">{modalContent.name}</h2>
+            </div>
+          ))
+        }
+      </div>
     </div>
   )
 }

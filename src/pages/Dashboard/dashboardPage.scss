@@ -72,4 +72,10 @@
       }
     }
   }
+  .modal {
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 20px;
+    padding: 100px 20px;
+  }
 }
