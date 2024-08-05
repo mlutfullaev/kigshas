@@ -26,7 +26,8 @@ const DashboardPage = () => {
   const [eventsSize, setEventsSize] = useState(0)
   const [size, setSize] = useState(Number(localStorage.getItem('table_size')) || tableSizeOptions[0].value)
   const [newItem, setNewItem] = useState(0)
-  const [modalContents, setModalContents] = useState<IModalContent[]>([])
+  const [faults, setFaults] = useState<IModalContent[]>([])
+  const [errors, setErrors] = useState<IModalContent[]>([])
 
   useEffect(() => {
     const socket = new WebSocket('ws://localhost:8000/ws')
@@ -41,7 +42,7 @@ const DashboardPage = () => {
 
       // Service Online
       if (!data.id && data.service.status === 'online') {
-        setModalContents(oldItems => oldItems.filter(item => Number(item.service_id) !== Number(data.service.id)))
+        setFaults(oldItems => oldItems.filter(item => Number(item.service_id) !== Number(data.service.id)))
         return
       }
 
@@ -52,10 +53,16 @@ const DashboardPage = () => {
           name: data.name,
           service_id: data.service_id
         }
-        setModalContents(oldItems =>
-          [...oldItems.filter(item => item.service_id !== data.service_id), modalContent]
-        )
-        if (Number(data.code) <= 100) return
+        if (Number(data.code) <= 100) {
+          setFaults(oldItems =>
+            [...oldItems.filter(item => item.service_id !== data.service_id), modalContent]
+          )
+          return
+        } else {
+          setErrors(oldItems =>
+            [...oldItems.filter(item => item.service_id !== data.service_id), modalContent]
+          )
+        }
       }
 
       // Добавление в таблицу
@@ -107,12 +114,12 @@ const DashboardPage = () => {
   }, [size])
 
   useEffect(() => {
-    modalContents.forEach(modalContent => {
+    errors.forEach(error => {
       // Удаление ошибки
-      if (Number(modalContent.code) > 100) {
+      if (Number(error.code) > 100) {
         const timeout = setTimeout(() => {
-          setModalContents(oldItems =>
-            oldItems.filter(item => item.service_id !== modalContent.service_id)
+          setErrors(oldItems =>
+            oldItems.filter(item => item.service_id !== error.service_id)
           )
         }, 3000)
 
@@ -121,7 +128,7 @@ const DashboardPage = () => {
         }
       }
     })
-  }, [modalContents])
+  }, [errors])
   
   return (
     <div className="dashboard-page">
@@ -177,14 +184,24 @@ const DashboardPage = () => {
 
       {/*  <h2 className="title">{modalContent?.title}</h2>*/}
       {/*</BaseModal>*/}
-      <div className={`modal${modalContents.length ? ' active' : ''}`}>
+      <div className={`modal${faults.length || errors.length ? ' active' : ''}`}>
         {
-          modalContents.map(modalContent => (
-            <div className="modal-content" key={modalContent.id}>
+          faults.map(fault => (
+            <div className="modal-content" key={fault.service_id}>
               {
-                modalContent.code ? <p className="subtitle">Критическая {modalContent.code}</p> : null
+                fault.code ? <p className="subtitle">Критическая {fault.code}</p> : null
               }
-              <h2 className="title">{modalContent.name}</h2>
+              <h2 className="title">{fault.name}</h2>
+            </div>
+          ))
+        }
+        {
+          errors.map(error => (
+            <div className="modal-content" key={error.service_id}>
+              {
+                error.code ? <p className="subtitle">Критическая {error.code}</p> : null
+              }
+              <h2 className="title">{error.name}</h2>
             </div>
           ))
         }
