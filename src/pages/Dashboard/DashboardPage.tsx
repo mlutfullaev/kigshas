@@ -74,7 +74,7 @@ const DashboardPage = () => {
       }
     })
       .then(res => {
-        setEvents(oldEvents => [...oldEvents, ...res.data.results])
+        setEvents([...events, ...res.data.results])
         setEventsSize(res.data.count)
       })
   }
@@ -90,6 +90,16 @@ const DashboardPage = () => {
     setEvents([])
     getEvents(size, [])
   }, [size])
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDisconnectedModal(false)
+    }, 3000)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [disconnectedModal])
   
   return (
     <div className="dashboard-page">
@@ -138,7 +148,6 @@ const DashboardPage = () => {
       </BaseTable>
       <BaseModal
         active={disconnectedModal}
-        hide={() => setDisconnectedModal(false)}
       >
         {
           modalContent?.subtitle ? <p className="subtitle">{modalContent.subtitle}</p> : null

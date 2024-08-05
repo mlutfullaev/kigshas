@@ -26,10 +26,9 @@ const ErrorsPage = ({ type, tableName }: ErrorsPageProps) => {
       page: Math.ceil(faults.length / 20) + 1,
       check_out_time: search ? getTimeForBack(search) : null
     }
-
     axios.get(`${API_URL}/${type}/`, { params })
       .then(res => {
-        setFaults(oldFaults => [...oldFaults, ...res.data.results])
+        setFaults( [...faults, ...res.data.results])
         setFaultsCount(res.data.count)
       })
       .catch(e => {

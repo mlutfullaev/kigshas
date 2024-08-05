@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom'
 type BaseModalProps = {
   children: ReactNode[] | ReactNode
   active: boolean
-  hide: () => void
+  hide?: () => void
 }
 
 const BaseModal = ({ children, active, hide }: BaseModalProps) => {
@@ -19,7 +19,7 @@ const BaseModal = ({ children, active, hide }: BaseModalProps) => {
   }, [active])
 
   return createPortal(
-    <div className={`modal${active ? ' active' : ''}`} onClick={() => hide()}>
+    <div className={`modal${active ? ' active' : ''}`} onClick={hide}>
       <div
         className="modal-content"
         onClick={(e) => e.stopPropagation()}
