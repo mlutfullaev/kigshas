@@ -34,25 +34,26 @@ const DashboardPage = () => {
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data)
+      console.log(data)
       if (data.code) {
         setModalContent({
           subtitle: data.code,
           title: data.name,
         })
         setDisconnectedModal(true)
-      } else {
-        const newEvent = {
-          ...data,
-          service: {
-            ...data.service,
-            descent: {
-              name: data.service.descent,
-            }
+        if (Number(data.code) <= 100) return
+      }
+      const newEvent = {
+        ...data,
+        service: {
+          ...data.service,
+          descent: {
+            name: data.service.descent,
           }
         }
-        setNewItem(oldItems => ++oldItems)
-        setEvents(events => [newEvent, ...events])
       }
+      setNewItem(oldItems => ++oldItems)
+      setEvents(events => [newEvent, ...events])
     }
 
     socket.onclose = () => {
@@ -92,14 +93,16 @@ const DashboardPage = () => {
   }, [size])
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setDisconnectedModal(false)
-    }, 3000)
+    if (Number(modalContent?.subtitle) > 100) {
+      const timeout = setTimeout(() => {
+        setDisconnectedModal(false)
+      }, 3000)
 
-    return () => {
-      clearTimeout(timeout)
+      return () => {
+        clearTimeout(timeout)
+      }
     }
-  }, [disconnectedModal])
+  }, [disconnectedModal, modalContent])
   
   return (
     <div className="dashboard-page">
