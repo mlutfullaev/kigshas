@@ -160,7 +160,9 @@ const DashboardPage = () => {
                 <p>{event.service.descent.name || '-'}</p>
               </div>
               <div className={`table-item${!event.vehicle?.number ? ' error' : ''}`}>
-                <p>{event.vehicle?.number || 'Не удалось считать метку'}</p>
+                <p>{
+                  Number(event.code) >= 102 ? 'Не удалось рассчитать КИГ' :
+                    event.vehicle?.number || 'Не удалось считать метку'}</p>
               </div>
               <div className={`table-item${event.kig && Number(event.kig) < 40 ? ' warning' : Number(event.kig) < 80 ? ' error' : ''}`}>
                 <p>{event.kig ? event.kig + '%' : '-'}</p>
@@ -175,15 +177,6 @@ const DashboardPage = () => {
           ))
         }
       </BaseTable>
-      {/*<BaseModal*/}
-      {/*  active={disconnectedModal}*/}
-      {/*>*/}
-      {/*  {*/}
-      {/*    modalContent?.subtitle ? <p className="subtitle">{modalContent.subtitle}</p> : null*/}
-      {/*  }*/}
-
-      {/*  <h2 className="title">{modalContent?.title}</h2>*/}
-      {/*</BaseModal>*/}
       <div className={`modal${faults.length || errors.length ? ' active' : ''}`}>
         {
           faults.map(fault => (

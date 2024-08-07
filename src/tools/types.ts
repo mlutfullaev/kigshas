@@ -68,6 +68,7 @@ export interface IError {
 export interface IEvent {
   id: number
   vehicle: null | IVehicle
+  code: string
   error: IError
   service: IService
   check_in_time: string
