@@ -192,7 +192,7 @@ const DashboardPage = () => {
           errors.map(error => (
             <div className="modal-content" key={error.service_id}>
               {
-                error.code ? <p className="subtitle">Критическая {error.code}</p> : null
+                error.code ? <p className="subtitle">Ошибка {error.code}</p> : null
               }
               <h2 className="title">{error.name}</h2>
             </div>
