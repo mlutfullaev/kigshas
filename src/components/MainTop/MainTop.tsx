@@ -134,7 +134,7 @@ const MainTop = ({ showModelTable, setShowModelTable, getData }: MainTopProps) =
     })
       .then(async res => {
         const data = formatEventsForExcel(res.data.results)
-        await exportExcel(data, 'kigshas', '/template.xlsx')
+        await exportExcel(data)
       })
   }
   

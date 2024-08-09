@@ -20,13 +20,10 @@ export const exportExcel = async (
       'Технический рейс',
     ]
 
-    // Add headers as the first row
     const sheetData = [headers, ...data]
 
-    // Create a worksheet from the data array
     const worksheet = XLSX.utils.aoa_to_sheet(sheetData)
 
-    // Apply bold styling to the header row
     headers.forEach((_, index) => {
       const cellAddress = XLSX.utils.encode_cell({ r: 0, c: index })
       if (worksheet[cellAddress]) {
@@ -37,13 +34,14 @@ export const exportExcel = async (
     const workbook = XLSX.utils.book_new()
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Events')
 
-    // Generating and downloading the Excel file
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
     const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
 
     const link = document.createElement('a')
     link.href = URL.createObjectURL(blob)
     link.download = 'kigshas.xlsx'
+    link.style.opacity = '0'
+    link.style.position = 'absolute'
 
     document.body.appendChild(link)
     link.click()
