@@ -10,6 +10,10 @@ Currently, two official plugins are available:
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+```bash
+docker build -t kigshas-front .
+docker compose up
+```
 
 - Configure the top-level `parserOptions` property like this:
 
