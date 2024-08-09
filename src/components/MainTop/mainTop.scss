@@ -23,5 +23,15 @@
         border-color: var(--grey);
       }
     }
+    img {
+      width: 20px;
+      height: auto;
+    }
   }
+}
+.download-modal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding-bottom: 10px;
 }

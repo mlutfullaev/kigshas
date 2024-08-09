@@ -8,15 +8,4 @@
     display: flex;
     flex-direction: column;
   }
-  .react-date-picker__wrapper {
-    padding: 14px 20px;
-    border-radius: 6px;
-    background: var(--grey);
-    border: none;
-    width: 220px;
-    font-size: 20px;
-  }
-  .react-date-picker__calendar {
-    z-index: 3;
-  }
 }

@@ -184,7 +184,7 @@ const DashboardPage = () => {
               {
                 fault.code ? <p className="subtitle">Критическая {fault.code}</p> : null
               }
-              <h2 className="title">{fault.name}</h2>
+              <h2 className="title red">{fault.name}</h2>
             </div>
           ))
         }
@@ -194,7 +194,7 @@ const DashboardPage = () => {
               {
                 error.code ? <p className="subtitle">Ошибка {error.code}</p> : null
               }
-              <h2 className="title">{error.name}</h2>
+              <h2 className="title red">{error.name}</h2>
             </div>
           ))
         }

@@ -100,3 +100,4 @@ export interface IFault {
   kig: string,
   mass: string
 }
+export type TTableRow = number | string | boolean
