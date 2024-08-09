@@ -6,7 +6,7 @@ export const exportExcel = async (
   try {
     const headers = [
       'ID',
-      'рудоспуска',
+      '№ рудоспуска',
       'check_out_time',
       'model_type',
       'MT_number',
