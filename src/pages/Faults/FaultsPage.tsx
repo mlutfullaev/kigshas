@@ -16,7 +16,6 @@ const FaultsPage = () => {
   const [search, setSearch] = useState('')
   const [faults, setFaults] = useState<IFault[]>([])
   const [faultsCount, setFaultsCount] = useState(0)
-  const [errors, setErrors] = useState<IFault[]>([])
   const navigate = useNavigate()
 
   const getFaults = useCallback((faults: IFault[]) => {
@@ -27,6 +26,14 @@ const FaultsPage = () => {
     }
     axios.get(`${API_URL}/fault/`, { params })
       .then(res => {
+        const uniqueItems = res.data.results.reduce((acc: IFault[], current: IFault) => {
+          const x = acc.find(item => item.service.id === current.service.id)
+          if (!x) {
+            acc.push(current)
+          }
+          return acc
+        }, [])
+        console.log(uniqueItems)
         setFaults( [...faults, ...res.data.results])
         setFaultsCount(res.data.count)
       })
@@ -73,20 +80,18 @@ const FaultsPage = () => {
           }
         }
       }
-
-      setFaults(faults => [newEvent, ...faults])
-      const exist = errors.some(fault => fault.service.id === data.service_id)
-
-      if (Number(data.code) === 0) {
-        setErrors(errors => errors.filter(
-          error => error.service.id !== newEvent.service.id
-        ))
-      } else if (exist) {
-        setErrors(errors => errors.map(
-          error => error.service.id === data.service_id ? newEvent : error
-        ))
+      const exist = faults.findIndex(fault => fault.service.id === newEvent.service.id)
+      if (exist === -1) {
+        setFaults(faults => [newEvent, ...faults])
       } else {
-        setErrors(faults => [newEvent, ...faults])
+        let changed = false
+        setFaults(faults => faults.map(fault => {
+          if (fault.service.id === newEvent.service.id && !changed) {
+            changed = true
+            return newEvent
+          }
+          return fault
+        }))
       }
     }
 
@@ -105,23 +110,6 @@ const FaultsPage = () => {
       setSearch('')
     }
   }, [searchDate])
-
-  useEffect(() => {
-    errors.forEach(error => {
-      // Удаление ошибки
-      if (Number(error.code) > 100) {
-        const timeout = setTimeout(() => {
-          setErrors(oldItems =>
-            oldItems.filter(item => item.service.id !== error.service.id)
-          )
-        }, 3000)
-
-        return () => {
-          clearTimeout(timeout)
-        }
-      }
-    })
-  }, [errors])
 
   return (
     <div className="errors-page page-content">
@@ -147,18 +135,6 @@ const FaultsPage = () => {
           )
         }
       </BaseTable>
-      <div className={`modal multiple${errors.length ? ' active' : ''}`}>
-        {
-          errors.map(error => (
-            <div className="modal-content" key={error.service.id}>
-              {
-                error.code ? <p className="subtitle">Ошибка {error.code}</p> : null
-              }
-              <h2 className="title red">{error.name}</h2>
-            </div>
-          ))
-        }
-      </div>
     </div>
   )
 }
