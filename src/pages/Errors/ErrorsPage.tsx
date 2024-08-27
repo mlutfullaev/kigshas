@@ -1,32 +1,27 @@
 import './errorsPage.scss'
 import SearchTime from '@/components/SearchTime/SearchTime.tsx'
 import { useCallback, useEffect, useState } from 'react'
-import { DatePickerValue, IFault } from '@/tools/types.ts'
+import { DatePickerValue, IEvent } from '@/tools/types.ts'
 import { getTime, getTimeForBack } from '@/tools/helpers.ts'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
 import { useNavigate } from 'react-router-dom'
 
-type ErrorsPageProps = {
-  type: string
-  tableName: string
-}
-
-const ErrorsPage = ({ type, tableName }: ErrorsPageProps) => {
+const ErrorsPage = () => {
   const [searchDate, setSearchDate] = useState<DatePickerValue>(null)
   const [search, setSearch] = useState('')
-  const [faults, setFaults] = useState<IFault[]>([])
+  const [faults, setFaults] = useState<IEvent[]>([])
   const [faultsCount, setFaultsCount] = useState(0)
   const navigate = useNavigate()
 
-  const getFaults = useCallback((faults: IFault[], type: string) => {
+  const getFaults = useCallback((faults: IEvent[]) => {
     const params = {
       per_page: 20,
       page: Math.ceil(faults.length / 20) + 1,
       check_out_time: search ? getTimeForBack(search) : null
     }
-    axios.get(`${API_URL}/${type}/`, { params })
+    axios.get(`${API_URL}/warning/`, { params })
       .then(res => {
         setFaults( [...faults, ...res.data.results])
         setFaultsCount(res.data.count)
@@ -41,8 +36,8 @@ const ErrorsPage = ({ type, tableName }: ErrorsPageProps) => {
 
   useEffect(() => {
     setFaults([])
-    getFaults([], type)
-  }, [getFaults, type])
+    getFaults([])
+  }, [getFaults])
 
   const onSearch = () => {
     if (!searchDate) return
@@ -62,8 +57,8 @@ const ErrorsPage = ({ type, tableName }: ErrorsPageProps) => {
       <SearchTime value={searchDate} setValue={setSearchDate} onSearch={onSearch}/>
       <BaseTable
         className="errors-table"
-        headers={['Время', tableName, 'Сервис']}
-        loadMore={() => faults.length < faultsCount && getFaults(faults, type)}
+        headers={['Время', 'Ошибка', 'Сервис']}
+        loadMore={() => faults.length < faultsCount && getFaults(faults)}
       >
         {
           faults.map(fault =>

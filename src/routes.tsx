@@ -4,6 +4,7 @@ import LoginPage from '@/pages/Login/LoginPage.tsx'
 import ProtectedRoute from '@/components/ProtectedRote/ProtectedRoute.tsx'
 import ErrorsPage from '@/pages/Errors/ErrorsPage.tsx'
 import Services from '@/pages/Services/Services.tsx'
+import FaultsPage from '@/pages/Faults/FaultsPage.tsx'
 
 export default [
   {
@@ -21,13 +22,13 @@ export default [
   {
     header: 'Ошибки системы',
     sidebar: true,
-    component: <ProtectedRoute><ErrorsPage type='warning' tableName="Ошибка" /></ProtectedRoute>,
+    component: <ProtectedRoute><ErrorsPage /></ProtectedRoute>,
     route: '/warnings',
   },
   {
     header: 'Аварии системы',
     sidebar: true,
-    component: <ProtectedRoute><ErrorsPage type='fault' tableName="Авария" /></ProtectedRoute>,
+    component: <ProtectedRoute><FaultsPage /></ProtectedRoute>,
     route: '/faults',
   },
   {

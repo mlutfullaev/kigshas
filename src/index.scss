@@ -249,6 +249,10 @@ body {
       background: #FFDFDF;
       color: #FF5959;
     }
+    &.success {
+      background: #e3ffec;
+      color: #2f913d;
+    }
     &.warning {
       background: rgba(228, 228, 228, 1);
       color: #000;

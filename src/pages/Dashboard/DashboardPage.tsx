@@ -47,7 +47,7 @@ const DashboardPage = () => {
       }
 
       // Ошибка или Авария
-      if (data.code) {
+      if (data.code || Number(data.code) !== 0) {
         const modalContent: IModalContent = {
           code: data.code,
           name: data.name,
@@ -177,7 +177,7 @@ const DashboardPage = () => {
           ))
         }
       </BaseTable>
-      <div className={`modal${faults.length || errors.length ? ' active' : ''}`}>
+      <div className={`modal multiple${faults.length || errors.length ? ' active' : ''}`}>
         {
           faults.map(fault => (
             <div className="modal-content" key={fault.service_id}>

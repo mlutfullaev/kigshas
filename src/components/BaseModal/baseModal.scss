@@ -12,6 +12,12 @@
   justify-content: center;
   align-items: center;
 
+  &.multiple {
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 20px;
+    padding: 100px 20px;
+  }
   h2 {
     font-size: 20px;
     text-align: center;
