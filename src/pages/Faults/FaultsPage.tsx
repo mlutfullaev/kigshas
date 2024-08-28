@@ -80,19 +80,7 @@ const FaultsPage = () => {
           }
         }
       }
-      const exist = faults.findIndex(fault => fault.service.id === newEvent.service.id)
-      if (exist === -1) {
-        setFaults(faults => [newEvent, ...faults])
-      } else {
-        let changed = false
-        setFaults(faults => faults.map(fault => {
-          if (fault.service.id === newEvent.service.id && !changed) {
-            changed = true
-            return newEvent
-          }
-          return fault
-        }))
-      }
+      setFaults(faults => [newEvent, ...faults])
     }
 
     socket.onclose = () => {

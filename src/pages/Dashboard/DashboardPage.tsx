@@ -40,6 +40,8 @@ const DashboardPage = () => {
       const data = JSON.parse(event.data)
       console.log(data)
 
+      if (Number(data.code) === 0) return
+
       // Service Online
       if (!data.id && data.service.status === 'online') {
         setFaults(oldItems => oldItems.filter(item => Number(item.service_id) !== Number(data.service.id)))
@@ -47,7 +49,7 @@ const DashboardPage = () => {
       }
 
       // Ошибка или Авария
-      if (data.code || Number(data.code) !== 0) {
+      if (data.code) {
         const modalContent: IModalContent = {
           code: data.code,
           name: data.name,
