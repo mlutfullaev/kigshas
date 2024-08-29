@@ -40,10 +40,8 @@ const DashboardPage = () => {
       const data = JSON.parse(event.data)
       console.log(data)
 
-      if (Number(data.code) === 0) return
-
       // Service Online
-      if (!data.id && data.service.status === 'online') {
+      if (Number(data.code) === 0) {
         setFaults(oldItems => oldItems.filter(item => Number(item.service_id) !== Number(data.service.id)))
         return
       }
