@@ -4,7 +4,7 @@ import { tableSizeOptions } from '@/tools/data.ts'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
-import { IEvent } from '@/tools/types.ts'
+import { IEvent, IFault } from '@/tools/types.ts'
 import { getTime } from '@/tools/helpers.ts'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
 
@@ -19,7 +19,7 @@ const dashboardHeaders = [
 type IModalContent = {
   service_id: number,
   code?: string,
-  name: string
+  name: string | null
 }
 const DashboardPage = () => {
   const [events, setEvents] = useState<IEvent[]>([])
@@ -30,6 +30,36 @@ const DashboardPage = () => {
   const [errors, setErrors] = useState<IModalContent[]>([])
 
   useEffect(() => {
+    axios.get(`${API_URL}/fault/`)
+      .then(res => {
+        const uniqueItems = res.data.results.reduce((acc: IFault[], current: IFault) => {
+          const x = acc.find(item => item.service.id === current.service.id)
+          if (!x) {
+            acc.push(current)
+          }
+          return acc
+        }, [])
+
+        uniqueItems.forEach((event: IEvent) => {
+          if (event.code) {
+            const modalContent: IModalContent = {
+              code: event.code,
+              name: event.name,
+              service_id: event.service.id
+            }
+            if (Number(event.code) <= 100) {
+              setFaults(oldItems =>
+                [...oldItems.filter(item => item.service_id !== event.service.id), modalContent]
+              )
+              return
+            } else {
+              setErrors(oldItems =>
+                [...oldItems.filter(item => item.service_id !== event.service.id), modalContent]
+              )
+            }
+          }
+        })
+      })
     const socket = new WebSocket('ws://localhost:8000/ws')
 
     socket.onopen = () => {

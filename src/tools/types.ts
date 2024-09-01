@@ -84,23 +84,8 @@ export interface IEvent {
   mass: string
 }
 
-export interface IFault {
-  id: number
-  vehicle: null | IVehicle
-  code: string
-  name: string | null
-  error: IError
-  service: IService
-  check_in_time: string
-  check_out_time: string
-  input_volume: string
-  output_volume: string
-  unloaded_volume: string
-  technical_road: boolean
-  oversized: boolean
-  sticking: string
-  kig: string
-  mass: string
+export interface IFault extends IEvent {
+  service_id?: string
 }
 
 export type TTableRow = number | string | boolean

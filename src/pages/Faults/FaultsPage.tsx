@@ -1,15 +1,11 @@
 import SearchTime from '@/components/SearchTime/SearchTime.tsx'
 import { useCallback, useEffect, useState } from 'react'
-import { DatePickerValue, IEvent } from '@/tools/types.ts'
+import { DatePickerValue, IFault } from '@/tools/types.ts'
 import { getTime, getTimeForBack } from '@/tools/helpers.ts'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
 import { useNavigate } from 'react-router-dom'
-
-interface IFault extends IEvent {
-  corrected?: boolean
-}
 
 const FaultsPage = () => {
   const [searchDate, setSearchDate] = useState<DatePickerValue>(null)
@@ -26,14 +22,6 @@ const FaultsPage = () => {
     }
     axios.get(`${API_URL}/fault/`, { params })
       .then(res => {
-        const uniqueItems = res.data.results.reduce((acc: IFault[], current: IFault) => {
-          const x = acc.find(item => item.service.id === current.service.id)
-          if (!x) {
-            acc.push(current)
-          }
-          return acc
-        }, [])
-        console.log(uniqueItems)
         setFaults( [...faults, ...res.data.results])
         setFaultsCount(res.data.count)
       })
