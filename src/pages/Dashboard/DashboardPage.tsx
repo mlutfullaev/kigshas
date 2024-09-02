@@ -47,7 +47,7 @@ const DashboardPage = () => {
               name: event.name,
               service_id: event.service.id
             }
-            if (Number(event.code) <= 100) {
+            if (Number(event.code) <= 100 && Number(event.code) !== 0) {
               setFaults(oldItems =>
                 [...oldItems.filter(item => item.service_id !== event.service.id), modalContent]
               )
