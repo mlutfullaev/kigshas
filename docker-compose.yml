@@ -1,4 +1,5 @@
 version: '3'
+restart: always
 services:
   my_service:
     image: kigshas-front:latest
