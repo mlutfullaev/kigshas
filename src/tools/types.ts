@@ -58,6 +58,13 @@ export interface IService {
   status: 'online' | 'error' | 'offline'
 }
 
+export interface IStatus extends IService{
+  event: {
+    code: string
+    name: string
+  }
+}
+
 export interface IError {
   id: number
   name: string

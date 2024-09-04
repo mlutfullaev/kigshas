@@ -4,7 +4,7 @@ import { tableSizeOptions } from '@/tools/data.ts'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { API_URL } from '@/main.tsx'
-import { IEvent, IFault } from '@/tools/types.ts'
+import { IEvent, IStatus } from '@/tools/types.ts'
 import { getTime } from '@/tools/helpers.ts'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
 
@@ -16,6 +16,7 @@ const dashboardHeaders = [
   'Масса тонн',
   '% Налипания по массе'
 ]
+
 type IModalContent = {
   service_id: number,
   code?: string,
@@ -30,38 +31,8 @@ const DashboardPage = () => {
   const [errors, setErrors] = useState<IModalContent[]>([])
 
   useEffect(() => {
-    axios.get(`${API_URL}/fault/`)
-      .then(res => {
-        const uniqueItems = res.data.results.reduce((acc: IFault[], current: IFault) => {
-          const x = acc.find(item => item.service.id === current.service.id)
-          if (!x) {
-            acc.push(current)
-          }
-          return acc
-        }, [])
+    getServices()
 
-        uniqueItems.forEach((event: IEvent) => {
-          if (event.code) {
-            const modalContent: IModalContent = {
-              code: event.code,
-              name: event.name,
-              service_id: event.service.id
-            }
-            if (Number(event.code) === 0) return
-
-            if (Number(event.code) <= 100) {
-              setFaults(oldItems =>
-                [...oldItems.filter(item => item.service_id !== event.service.id), modalContent]
-              )
-              return
-            } else {
-              setErrors(oldItems =>
-                [...oldItems.filter(item => item.service_id !== event.service.id), modalContent]
-              )
-            }
-          }
-        })
-      })
     const socket = new WebSocket('ws://localhost:8000/ws')
 
     socket.onopen = () => {
@@ -72,32 +43,42 @@ const DashboardPage = () => {
       const data = JSON.parse(event.data)
       console.log(data)
 
-      // Service Online
-      if (Number(data.code) === 0) {
-        setFaults(oldItems => oldItems.filter(item => Number(item.service_id) !== Number(data.service.id)))
-        return
-      }
-
-      // Ошибка или Авария
       if (data.code) {
         const modalContent: IModalContent = {
           code: data.code,
           name: data.name,
           service_id: data.service_id
         }
-        if (Number(data.code) <= 100) {
+        if (Number(data.code) === 0) {
+          // Service Online
+          setFaults(oldItems=>
+            oldItems.filter(item => Number(item.service_id) !== Number(data.service_id))
+          )
+          return
+        } else if (Number(data.code) <= 100) {
+          // Service Offline
           setFaults(oldItems =>
             [...oldItems.filter(item => item.service_id !== data.service_id), modalContent]
           )
           return
         } else {
+          // Service Error
           setErrors(oldItems =>
             [...oldItems.filter(item => item.service_id !== data.service_id), modalContent]
           )
         }
       }
 
-      // Добавление в таблицу
+      // Service Online
+      if (data.service.status === 'online') {
+        console.log(data.service_id)
+        setFaults(oldItems =>
+          oldItems.filter(item => Number(item.service_id) !== Number(data.service_id))
+        )
+        return
+      }
+
+      // Event
       const newEvent = {
         ...data,
         service: {
@@ -119,6 +100,38 @@ const DashboardPage = () => {
       socket.close()
     }
   }, [])
+
+  const getServices = async () => {
+    const res = await axios.get(`${API_URL}/status`)
+    const services = res.data as IStatus[]
+
+    services.forEach(service => {
+      if (service.status === 'online') return
+
+      const modalContent: IModalContent = {
+        code: service.event.code,
+        name: service.event.name,
+        service_id: service.id
+      }
+
+      if (service.status === 'offline') {
+        setFaults(oldItems =>
+          [
+            ...oldItems.filter(item => item.service_id !== service.id),
+            modalContent
+          ]
+        )
+      }
+      else if (service.status === 'error') {
+        setErrors(oldItems =>
+          [
+            ...oldItems.filter(item => item.service_id !== service.id),
+            modalContent
+          ]
+        )
+      }
+    })
+  }
 
   const getEvents = (size: number, events: IEvent[]) => {
     axios.get(`${API_URL}/events/`, {
@@ -213,9 +226,7 @@ const DashboardPage = () => {
         {
           faults.map(fault => (
             <div className="modal-content" key={fault.service_id}>
-              {
-                fault.code ? <p className="subtitle">Критическая {fault.code}</p> : null
-              }
+              <p className="subtitle">Критическая {fault.code}</p>
               <h2 className="title red">{fault.name}</h2>
             </div>
           ))
