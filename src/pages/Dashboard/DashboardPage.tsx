@@ -75,7 +75,6 @@ const DashboardPage = () => {
         setFaults(oldItems =>
           oldItems.filter(item => Number(item.service_id) !== Number(data.service_id))
         )
-        return
       }
 
       // Event
