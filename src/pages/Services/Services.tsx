@@ -24,10 +24,6 @@ const Services = () => {
         }
       })
   }, [])
-
-  const onReset = () => {
-    axios.get(`${API_URL}/command`)
-  }
   
   return (
     <div className="page-content services-page">
@@ -44,7 +40,6 @@ const Services = () => {
           )
         }
       </ul>
-      <button className="btn btn-red" onClick={onReset}>Перезапуск системы</button>
     </div>
   )
 }
