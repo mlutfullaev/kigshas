@@ -4,7 +4,7 @@ import { DatePickerValue, IFault } from '@/tools/types.ts'
 import { getTime, getTimeForBack } from '@/tools/helpers.ts'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
 import axios from 'axios'
-import { API_URL } from '@/main.tsx'
+import { API_URL, SOCKET_URL } from '@/main.tsx'
 import { useNavigate } from 'react-router-dom'
 
 const FaultsPage = () => {
@@ -46,7 +46,7 @@ const FaultsPage = () => {
 
 
   useEffect(() => {
-    const socket = new WebSocket('ws://localhost:8000/ws')
+    const socket = new WebSocket(SOCKET_URL)
 
     socket.onopen = () => {
       console.log('Connected to the WebSocket')
