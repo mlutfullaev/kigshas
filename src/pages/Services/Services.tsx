@@ -15,7 +15,7 @@ const Services = () => {
   useEffect(() => {
     axios.get(`${API_URL}/services/`)
       .then(res => {
-        setServices(res.data)
+        setServices(res.data.results)
       })
       .catch(e => {
         if (e.response.status === 401) {

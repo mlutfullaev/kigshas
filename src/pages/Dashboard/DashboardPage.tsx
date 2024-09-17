@@ -198,7 +198,7 @@ const DashboardPage = () => {
           events.map(event => (
             <div className="table-column" key={event.id}>
               <div className="table-item">
-                <p>{getTime(event.check_out_time)}</p>
+                <p>{getTime(event.code ? event.check_out_time : event.check_out_time.split('+')[0])}</p>
               </div>
               <div className="table-item">
                 <p>{event.service.descent.name || '-'}</p>
