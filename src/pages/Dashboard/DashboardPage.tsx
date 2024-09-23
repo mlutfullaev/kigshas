@@ -29,19 +29,17 @@ const DashboardPage = () => {
   const [newItem, setNewItem] = useState(0)
   const [faults, setFaults] = useState<IModalContent[]>([])
   const [errors, setErrors] = useState<IModalContent[]>([])
-  const [connectionCount, setConnectionCount] = useState(0)
+  const [lastEvent, setLastEvent] = useState<number | null>(0)
 
   useEffect(() => {
     getServices()
-  }, [])
-  useEffect(() => {
-    const socket = new WebSocket(SOCKET_URL)
 
+    const socket = new WebSocket(SOCKET_URL)
     socket.onopen = () => {
       console.log('Connected to the WebSocket')
     }
-
     socket.onmessage = (event) => {
+      setLastEvent(new Date().getTime())
       const data = JSON.parse(event.data)
       console.log(data)
 
@@ -92,18 +90,34 @@ const DashboardPage = () => {
       setNewItem(oldItems => ++oldItems)
       setEvents(events => [newEvent, ...events])
     }
-
     socket.onclose = () => {
       console.log('Disconnected from the WebSocket')
-      setTimeout(() => {
-        setConnectionCount(count => count + 1)
-      }, 10000)
     }
 
     return () => {
       socket.close()
     }
-  }, [connectionCount])
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (lastEvent) {
+        const now = new Date().getTime() + 1000 * 60 * 10
+        if (lastEvent > now) {
+          setLastEvent(null)
+          axios.get(`${API_URL}/coefficient/`)
+            .then(() => window.location.reload())
+            .catch(() => {
+              setTimeout(() => {
+                setLastEvent(new Date().getTime() - 1000 * 60 * 1000 + 1000)
+              }, 1000 * 60)
+            })
+        }
+      }
+    }, 1000 * 60)
+
+    return () => clearInterval(interval)
+  }, [lastEvent])
 
   const getServices = async () => {
     const res = await axios.get(`${API_URL}/status`)
