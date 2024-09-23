@@ -12,6 +12,7 @@ const FaultsPage = () => {
   const [search, setSearch] = useState('')
   const [faults, setFaults] = useState<IFault[]>([])
   const [faultsCount, setFaultsCount] = useState(0)
+  const [connectionCount, setConnectionCount] = useState(0)
   const navigate = useNavigate()
 
   const getFaults = useCallback((faults: IFault[]) => {
@@ -73,6 +74,9 @@ const FaultsPage = () => {
 
     socket.onclose = () => {
       console.log('Disconnected from the WebSocket')
+      setTimeout(() => {
+        setConnectionCount(count => count + 1)
+      }, 10000)
     }
 
     return () => {

@@ -29,10 +29,12 @@ const DashboardPage = () => {
   const [newItem, setNewItem] = useState(0)
   const [faults, setFaults] = useState<IModalContent[]>([])
   const [errors, setErrors] = useState<IModalContent[]>([])
+  const [connectionCount, setConnectionCount] = useState(0)
 
   useEffect(() => {
     getServices()
-
+  }, [])
+  useEffect(() => {
     const socket = new WebSocket(SOCKET_URL)
 
     socket.onopen = () => {
@@ -93,12 +95,15 @@ const DashboardPage = () => {
 
     socket.onclose = () => {
       console.log('Disconnected from the WebSocket')
+      setTimeout(() => {
+        setConnectionCount(count => count + 1)
+      }, 10000)
     }
 
     return () => {
       socket.close()
     }
-  }, [])
+  }, [connectionCount])
 
   const getServices = async () => {
     const res = await axios.get(`${API_URL}/status`)
