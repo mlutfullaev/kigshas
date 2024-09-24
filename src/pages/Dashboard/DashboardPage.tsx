@@ -102,14 +102,15 @@ const DashboardPage = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (lastEvent) {
-        const now = new Date().getTime() + 1000 * 60 * 10
-        if (lastEvent > now) {
+        const interval = 1000 * 60 * 10
+        const now = new Date().getTime() - interval
+        if (lastEvent < now) {
           setLastEvent(null)
           axios.get(`${API_URL}/coefficient/`)
             .then(() => window.location.reload())
             .catch(() => {
               setTimeout(() => {
-                setLastEvent(new Date().getTime() - 1000 * 60 * 1000 + 1000)
+                setLastEvent(new Date().getTime() - interval)
               }, 1000 * 60)
             })
         }
