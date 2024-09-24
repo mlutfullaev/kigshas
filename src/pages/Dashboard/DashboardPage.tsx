@@ -29,7 +29,7 @@ const DashboardPage = () => {
   const [newItem, setNewItem] = useState(0)
   const [faults, setFaults] = useState<IModalContent[]>([])
   const [errors, setErrors] = useState<IModalContent[]>([])
-  const [lastEvent, setLastEvent] = useState<number | null>(0)
+  const [lastEvent, setLastEvent] = useState<number>(new Date().getTime())
 
   useEffect(() => {
     getServices()
@@ -101,19 +101,17 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (lastEvent) {
-        const interval = 1000 * 60 * 10
-        const now = new Date().getTime() - interval
-        if (lastEvent < now) {
-          setLastEvent(null)
-          axios.get(`${API_URL}/coefficient/`)
-            .then(() => window.location.reload())
-            .catch(() => {
-              setTimeout(() => {
-                setLastEvent(new Date().getTime() - interval)
-              }, 1000 * 60)
-            })
-        }
+      console.log(true)
+      const interval = 1000 * 60 * 2
+      const now = new Date().getTime() - interval
+      if (lastEvent < now) {
+        axios.get(`${API_URL}/coefficient/`)
+          .then(() => window.location.reload())
+          .catch(() => {
+            setTimeout(() => {
+              setLastEvent(now)
+            }, 1000 * 60)
+          })
       }
     }, 1000 * 60)
 
