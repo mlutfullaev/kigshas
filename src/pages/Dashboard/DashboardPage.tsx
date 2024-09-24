@@ -3,7 +3,7 @@ import Select from 'react-select'
 import { tableSizeOptions } from '@/tools/data.ts'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import {API_URL, SOCKET_URL} from '@/main.tsx'
+import {API_URL, RECONNECTING_TIME, SOCKET_URL} from '@/main.tsx'
 import { IEvent, IStatus } from '@/tools/types.ts'
 import { getTime } from '@/tools/helpers.ts'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
@@ -29,17 +29,17 @@ const DashboardPage = () => {
   const [newItem, setNewItem] = useState(0)
   const [faults, setFaults] = useState<IModalContent[]>([])
   const [errors, setErrors] = useState<IModalContent[]>([])
+  const [lastEvent, setLastEvent] = useState<number>(new Date().getTime())
 
   useEffect(() => {
     getServices()
 
     const socket = new WebSocket(SOCKET_URL)
-
     socket.onopen = () => {
       console.log('Connected to the WebSocket')
     }
-
     socket.onmessage = (event) => {
+      setLastEvent(new Date().getTime())
       const data = JSON.parse(event.data)
       console.log(data)
 
@@ -90,7 +90,6 @@ const DashboardPage = () => {
       setNewItem(oldItems => ++oldItems)
       setEvents(events => [newEvent, ...events])
     }
-
     socket.onclose = () => {
       console.log('Disconnected from the WebSocket')
     }
@@ -99,6 +98,23 @@ const DashboardPage = () => {
       socket.close()
     }
   }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log(true)
+
+      const interval = 1000 * 60 * RECONNECTING_TIME
+      const now = new Date().getTime() - interval
+
+      if (lastEvent < now) {
+        axios.get(`${API_URL}/coefficient/`)
+          .then(() => window.location.reload())
+          .catch(() => setLastEvent(now))
+      }
+    }, 1000 * 60)
+
+    return () => clearInterval(interval)
+  }, [lastEvent])
 
   const getServices = async () => {
     const res = await axios.get(`${API_URL}/status`)
@@ -198,7 +214,7 @@ const DashboardPage = () => {
           events.map(event => (
             <div className="table-column" key={event.id}>
               <div className="table-item">
-                <p>{getTime(event.check_out_time)}</p>
+                <p>{getTime(event.code ? event.check_out_time : event.check_out_time.split('+')[0])}</p>
               </div>
               <div className="table-item">
                 <p>{event.service.descent.name || '-'}</p>

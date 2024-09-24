@@ -45,7 +45,7 @@ const MainPage = () => {
   const getData = () => {
     axios.get(`${API_URL}/vehicles/`)
       .then(res => {
-        setVehicles(res.data)
+        setVehicles(res.data.results)
       })
       .catch(e => {
         if (e.response.status === 401) {
@@ -55,8 +55,8 @@ const MainPage = () => {
       })
     axios.get(`${API_URL}/models/`)
       .then(res => {
-        setModels(res.data)
-        setModelOptions(res.data.map((item: IModel) => ({
+        setModels(res.data.results)
+        setModelOptions(res.data.results.map((item: IModel) => ({
           value: item.id.toString(),
           label: item.name
         }))
@@ -74,7 +74,7 @@ const MainPage = () => {
     getData()
     axios.get(`${API_URL}/rfid/`)
       .then(res => {
-        setMarkOptions(res.data.map((item: IRfid) => ({
+        setMarkOptions(res.data.results.map((item: IRfid) => ({
           value: item.id.toString(),
           label: item.rfid
         })))
