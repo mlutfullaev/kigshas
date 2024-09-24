@@ -3,7 +3,7 @@ import Select from 'react-select'
 import { tableSizeOptions } from '@/tools/data.ts'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import {API_URL, SOCKET_URL} from '@/main.tsx'
+import {API_URL, RECONNECTING_TIME, SOCKET_URL} from '@/main.tsx'
 import { IEvent, IStatus } from '@/tools/types.ts'
 import { getTime } from '@/tools/helpers.ts'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
@@ -102,16 +102,14 @@ const DashboardPage = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       console.log(true)
-      const interval = 1000 * 60 * 2
+
+      const interval = 1000 * 60 * RECONNECTING_TIME
       const now = new Date().getTime() - interval
+
       if (lastEvent < now) {
         axios.get(`${API_URL}/coefficient/`)
           .then(() => window.location.reload())
-          .catch(() => {
-            setTimeout(() => {
-              setLastEvent(now)
-            }, 1000 * 60)
-          })
+          .catch(() => setLastEvent(now))
       }
     }, 1000 * 60)
 

@@ -28,6 +28,7 @@ axios.interceptors.request.use(
 
 export const API_URL = import.meta.env.VITE_APP_API_URL
 export const SOCKET_URL = import.meta.env.VITE_APP_SOCKET_URL
+export const RECONNECTING_TIME = import.meta.env.VITE_APP_RECONNECTING_TIME
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
