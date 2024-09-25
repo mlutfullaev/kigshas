@@ -1,3 +1,5 @@
+import {AxiosRequestConfig} from "axios";
+
 export interface ITableItem {
   id: number
   time: number
@@ -56,6 +58,9 @@ export interface IService {
   token: string
   last_request: string
   status: 'online' | 'error' | 'offline'
+}
+export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
+  skipAuth?: boolean;
 }
 
 export interface IStatus extends IService{

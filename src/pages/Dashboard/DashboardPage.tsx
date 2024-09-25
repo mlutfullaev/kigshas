@@ -3,8 +3,8 @@ import Select from 'react-select'
 import { tableSizeOptions } from '@/tools/data.ts'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import {API_URL, RECONNECTING_TIME, SOCKET_URL} from '@/main.tsx'
-import { IEvent, IStatus } from '@/tools/types.ts'
+import { API_URL, RECONNECTING_TIME, SOCKET_URL } from '@/main.tsx'
+import {CustomAxiosRequestConfig, IEvent, IStatus} from '@/tools/types.ts'
 import { getTime } from '@/tools/helpers.ts'
 import BaseTable from '@/components/BaseTable/BaseTable.tsx'
 
@@ -153,8 +153,9 @@ const DashboardPage = () => {
       params: {
         per_page: size,
         page: Math.ceil(events.length / size) + 1,
-      }
-    })
+      },
+      skipAuth: true,
+    } as CustomAxiosRequestConfig)
       .then(res => {
         setEvents([...events, ...res.data.results])
         setEventsSize(res.data.count)

@@ -7,6 +7,7 @@ import { Provider } from 'react-redux'
 import { store } from '@/store/store.ts'
 import { BrowserRouter } from 'react-router-dom'
 import axios from 'axios'
+import {CustomAxiosRequestConfig} from "@/tools/types.ts";
 
 axios.interceptors.request.use(
   (config) => {
@@ -14,7 +15,7 @@ axios.interceptors.request.use(
     if (!user) return config
     const { username, password } = JSON.parse(user)
 
-    if (username && password) {
+    if (username && password && !config.skipAuth) {
       config.auth = { username, password }
     }
 
